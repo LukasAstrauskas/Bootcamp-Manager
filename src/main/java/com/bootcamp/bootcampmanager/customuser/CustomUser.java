@@ -21,7 +21,8 @@ public class CustomUser implements UserDetails {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.isEnabled();
-        this.authorities = Arrays.stream(user.getRoles().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities = Arrays.stream(user.getRoles().split(","))
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override

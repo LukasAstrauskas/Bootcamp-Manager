@@ -110,39 +110,4 @@ public class StudentController {
         model.addAttribute("helper", new StudentHelper(studentService));
         return "student";
     }
-
-    @PostMapping("/printMSG")
-    public String print(@ModelAttribute("searchInfo") SearchInfo searchInfo) {
-        Long campId = searchInfo.getCampId();
-        Long taskId = searchInfo.getTaskId();
-        if (campId == 0 || taskId == 0) {
-            System.out.println("For Null");
-        }
-
-        System.out.println("Hi I'm working." + campId + " " + taskId);
-        return "redirect:/students";
-    }
-
-//    @PostMapping("/sorted-students")
-//    public String showSortedStudents(@ModelAttribute("searchInfo") SearchInfo searchInfo, Model model) {
-//        Long taskId = searchInfo.getTaskId();
-//        Long campId = searchInfo.getCampId();
-//        if (taskId == 0 || campId == 0) {
-//            return "redirect:/students";
-//        }
-//        Map<Student, Boolean> map = studentService.getAllStudentsByBootcampIdAndTaskId(campId, taskId);
-//
-//        System.out.println("Map size: "+map.size());
-//
-//        model.addAttribute("bootcamp", bootcampService.getBootcampById(campId).getName());
-//        model.addAttribute("task", taskService.getTaskById(taskId).getName());
-//        model.addAttribute("map",
-//                studentService.getAllStudentsByBootcampIdAndTaskId(campId, taskId)
-//        );
-//
-//        model.addAttribute("studentsList",
-//                studentService.getStudentByBootcampIdAndTaskId(campId, taskId));
-//        return "sorted-students";
-//    }
-
 }

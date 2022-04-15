@@ -19,28 +19,6 @@ import java.util.List;
 @Setter
 public class Student extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column
-    private String email;
-
-    @Column
-    private String password;
-
-    @Column
-    private String firstName;
-
-    @Column
-    private String lastName;
-
-    @Column
-    private boolean enabled;
-
-    @Column
-    private String roles;
-
     @Column
     private String completedTasks;
 
@@ -56,34 +34,15 @@ public class Student extends User {
     )
     List<Task> tasks;
 
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "group_id", referencedColumnName = "id")
-    private Group group;*/
-
     private String trainerName;
 
-    public Student(User user) {
-        super();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.roles = user.roles;
-        this.id = user.getId();
-        this.enabled = true;
-        this.completedTasks = new String("0");
+    public Student(String firstName, String lastName, String email) {
+        super(firstName, lastName, email);
+        setRoles("ROLE_STUDENT");
     }
 
     public Student() {
-        super();
-        this.roles = "ROLE_STUDENT";
-        this.completedTasks = new String("0");
     }
-
-    public String userRole() {
-        return "student";
-    }
-
 
     public void setTaskCompleted(Task task){
 

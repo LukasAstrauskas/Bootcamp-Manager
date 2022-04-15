@@ -35,14 +35,6 @@ public class Task {
     @Column
     private String linkURL;
 
-    /*@Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateFrom;*/
-
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "link_id", referencedColumnName = "id")
-    private Link link;*/
-
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "file_id", referencedColumnName = "id")
     private FileDB fileDB;
@@ -53,16 +45,6 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "bootcamp_id", referencedColumnName = "id")
     private Bootcamp bootcamp;
-
-    /*@ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="course_id", referencedColumnName = "id")
-    private Course course;*/
-
-    /*@OneToMany(mappedBy = "task")
-    private List<Link> links;*/
-
-    /*@OneToMany(mappedBy = "task")
-    private List<FileDB> files;*/
 
     /* File and link mandatory */
     public Task(String name, String description, Date deadline, FileDB fileDB, String linkURL) {
@@ -104,14 +86,4 @@ public class Task {
     public Task(String name) {
         this.name = name;
     }
-
-    /*public String getStatus(boolean isCompleted) {
-        String status = "";
-        if(isCompleted) {
-            status = "completed";
-        } else {
-            status = "not started";
-        }
-        return status;
-    }*/
 }

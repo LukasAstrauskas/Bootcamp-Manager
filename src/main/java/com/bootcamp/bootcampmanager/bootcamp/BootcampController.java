@@ -40,7 +40,6 @@ public class BootcampController {
     @GetMapping("/new-bootcamp")
     public String showNewBootcampForm(Model model) {
         model.addAttribute("bootcamp", new Bootcamp());
-        /*return "bootcamp/new-bootcamp";*/
         return "new-bootcamp";
     }
 
@@ -71,17 +70,14 @@ public class BootcampController {
 
     @GetMapping(value = "/link-student/{id}")
     public String showStudentCheckbox(@PathVariable (value = "id") long id, Model model) {
-        List<Student> students = new ArrayList<>();
-        for(Student student: studentService.getAllStudents())
-            if(student.getBootcamp() == null)
-                students.add(student);
-        model.addAttribute("students",  students);
+        model.addAttribute("students",  studentService.getStudentsWithNoBootcamp());
         model.addAttribute("bootcamp",  bootcampService.getBootcampById(id));
         return "link-student";
     }
 
     @PostMapping("/insert/{id}")
-    public String insertStudent(@ModelAttribute("bootcamp") Bootcamp bootcamp, @PathVariable (value = "id") long id) {
+    public String insertStudent(@ModelAttribute("bootcamp") Bootcamp bootcamp,
+                                @PathVariable (value = "id") long id) {
         Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
         for(Student student : bootcamp.getStudents()){
             student.setBootcamp(thisBootcamp);

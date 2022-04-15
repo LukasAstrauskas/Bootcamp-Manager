@@ -31,13 +31,6 @@ public class FileDB {
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
-    /*public FileDB(String name, String type, byte[] data) {
-        super();
-        this.name = name;
-        this.type = type;
-        this.data = data;
-    }*/
-
     public FileDB(String name, String type, byte[] data, Task task) {
         super();
         this.name = name;
@@ -45,8 +38,4 @@ public class FileDB {
         this.data = data;
         this.task = task;
     }
-
-    /*@ManyToOne
-    @JoinColumn(name="task_id")
-    private Task task;*/
 }

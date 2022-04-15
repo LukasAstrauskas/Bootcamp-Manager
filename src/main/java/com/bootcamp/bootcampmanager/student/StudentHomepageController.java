@@ -26,8 +26,8 @@ public class StudentHomepageController {
     public String showStudentTasks(Model model, Principal principal) {
 
         List<Student> allStudents = studentService.getAllStudents();
-        for(Student student : allStudents)
-            if(student.getEmail().equals(principal.getName())){
+        for (Student student : allStudents)
+            if (student.getEmail().equals(principal.getName())) {
                 List<Task> tasksList = new ArrayList<>();
                 if (student.getBootcamp() != null)
                     tasksList.addAll(student.getBootcamp().getTasks());
@@ -40,9 +40,10 @@ public class StudentHomepageController {
     }
 
     @GetMapping("/student-task/{id}/{studentId}")
-    public String displayTaskPage(@PathVariable(value = "id") long id,@PathVariable(value = "studentId") long studentId, Model model) {
+    public String displayTaskPage(@PathVariable(value = "id") long id,
+                                  @PathVariable(value = "studentId") long studentId,
+                                  Model model) {
         Task task = taskService.getTaskById(id);
-
         model.addAttribute("task", task);
         model.addAttribute("thisStudent", studentService.getStudentById(studentId));
         model.addAttribute("link", "resource link: ");
@@ -51,7 +52,9 @@ public class StudentHomepageController {
     }
 
     @GetMapping("/set-task-completed/{id}/{studentId}")
-    public String setTaskCompleted(@PathVariable(value = "id") long id, @PathVariable(value = "studentId") long studentId, Model model) {
+    public String setTaskCompleted(@PathVariable(value = "id") long id,
+                                   @PathVariable(value = "studentId") long studentId
+    ) {
         Student thisStudent = studentService.getStudentById(studentId);
         thisStudent.setTaskCompleted(taskService.getTaskById(id));
         studentService.saveStudent(thisStudent);
@@ -59,7 +62,9 @@ public class StudentHomepageController {
     }
 
     @GetMapping("/unset-task-completed/{id}/{studentId}")
-    public String unsetTaskCompleted(@PathVariable(value = "id") long id, @PathVariable(value = "studentId") long studentId, Model model) {
+    public String unsetTaskCompleted(@PathVariable(value = "id") long id,
+                                     @PathVariable(value = "studentId") long studentId
+    ) {
         Student thisStudent = studentService.getStudentById(studentId);
         thisStudent.unsetTaskCompleted(taskService.getTaskById(id));
         studentService.saveStudent(thisStudent);

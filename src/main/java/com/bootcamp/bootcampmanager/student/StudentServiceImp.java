@@ -6,6 +6,7 @@ import com.bootcamp.bootcampmanager.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -43,6 +44,17 @@ public class StudentServiceImp implements StudentService {
     @Override
     public void deleteStudentById(long id) {
         this.studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Student> getStudentsWithNoBootcamp() {
+        List<Student> students = new ArrayList<>();
+        for (Student student : getAllStudents()) {
+            if (student.getBootcamp() == null) {
+                students.add(student);
+            }
+        }
+        return students;
     }
 
 //    @Override

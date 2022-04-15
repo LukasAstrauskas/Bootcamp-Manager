@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface LecturerRepository extends JpaRepository<Lecturer, Long> {
 
+    
+
 }

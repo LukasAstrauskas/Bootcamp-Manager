@@ -18,21 +18,27 @@ public class User {
     private Long id;
 
     @Column
-    private String email;
-
-    @Column
-    private String password;
-
-    @Column
     private String firstName;
 
     @Column
     private String lastName;
 
     @Column
+    private String email;
+
+    @Column
+    private String password;
+
+    @Column
     private boolean enabled;
 
     @Column
-    public String roles;
+    private String roles;
 
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.enabled = true;
+    }
 }
