@@ -39,7 +39,7 @@ public class MailServiceImpl implements MailService
         mail.setMailFrom("bootcamp.manager.2022@gmail.com");
         mail.setMailTo(user.getEmail());
         mail.setMailSubject("Invitation to join Bootcamp Manager");
-        mail.setMailContent("Hello, " + user.getFirstName() + " " + user.getLastName() + ",\n\nYou are invited to join Bootcamp Manager. Please login to application with your email and password. Change your password after you login on profile page. \n\nYour password: " + user.getPassword() + "\n\n" + "Link to login page: http://localhost:8080/login\n\nBest regards,\nBootcamp Manager team");
+        mail.setMailContent("Hello, " + user.getFirstName() + " " + user.getLastName() + ",\n\nYou are invited to join Bootcamp Manager. Please login to application with your email and password. Change your password after you login on profile page. \n\nYour password: " + user.getPassword() + "\n\n" + "Link to login page: https://bootcamp-manager.herokuapp.com/login\n\nBest regards,\nBootcamp Manager team");
         sendEmail(mail);
     }
 

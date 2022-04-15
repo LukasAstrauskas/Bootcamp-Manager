@@ -54,12 +54,9 @@
         <div class="container">
 
             <div>
-                <h2>Tasks for student "<a th:text="${thisStudent.getFirstName()}"></a>" </h2>
+                <!--<h2>Tasks for student "<a th:text="${thisStudent.getFirstName()}"></a>" </h2>-->
+                <h2> My tasks </h2>
             </div>
-
-            <br/>
-
-
             <br/>
 
             <!-- Table -->
@@ -70,7 +67,6 @@
                     <tr>
                         <th> # </th>
                         <th> Task </th>
-                        <th> Description </th>
                         <th> Deadline </th>
                         <th> Status </th>
                         <th> Actions </th>
@@ -81,14 +77,13 @@
                     <tr th:each="task : ${tasksList}">
                         <td th:text="${tasksList.indexOf(task)+1}"></td>
                         <td th:text="${task.name}"></td>
-                        <td th:text="${task.description}"></td>
                         <td th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
                         <td th:text="${helper.isTaskCompleted(task.getId(), thisStudent.getId())}"></td>
                         <td>
                             <!-- Open selected task's page button -->
-                            <a th:href="@{/student-task/{id}/{studentId}(id=${task.id}, studentId=${thisStudent.getId()})}" class="btn btn-warning">Open</a>
-                            <a th:href="@{/set-task-completed/{id}/{student}(id=${task.id}, student=${thisStudent.id})}" class="btn btn-success">Mark as completed</a>
-                            <a th:href="@{/unset-task-completed/{id}/{student}(id=${task.id}, student=${thisStudent.id})}" class="btn btn-danger">Unmark</a>
+                            <a th:href="@{/student-task/{id}/{studentId}(id=${task.id}, studentId=${thisStudent.getId()})}" class="btn btn-warning"> Open </a>
+                            <a th:href="@{/set-task-completed/{id}/{student}(id=${task.id}, student=${thisStudent.id})}" class="btn btn-success"><i class="fa-solid fa-check"></i> Mark </a>
+                            <a th:href="@{/unset-task-completed/{id}/{student}(id=${task.id}, student=${thisStudent.id})}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Unmark </a>
                             <!-- Edit button -->
                             <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
                             <!-- Delete button -->
