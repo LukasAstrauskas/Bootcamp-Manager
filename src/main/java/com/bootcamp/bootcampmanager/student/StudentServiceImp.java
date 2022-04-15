@@ -57,28 +57,14 @@ public class StudentServiceImp implements StudentService {
         return students;
     }
 
-//    @Override
-//    public Map<Student, Boolean> getAllStudentsByBootcampIdAndTaskId(Long campId, Long taskId) {
-//    public List<Student> getStudentByBootcampIdAndTaskId(Long campId, Long taskId) {
-//
-//        List<Student> collect = getAllStudents().stream()
-//                .filter(student -> student.getBootcamp().getId() == campId)
-//                .filter(student -> student.getTasks()
-//                        .stream()
-//                        .anyMatch(task -> task.getId() == taskId))
-//                .collect(Collectors.toList());
-//
-//        Map<Student, Boolean> studentTaskMap = collect.stream()
-//                .collect(Collectors.toMap(student -> student,
-//                        student ->
-//                                student.getTasks().stream()
-//                                        .filter(task -> task.getId() == taskId)
-//                                        .findFirst().get().isCompleted()
-//                ));
-//        return studentTaskMap;
-//        return collect;
-//
-//    }
+    @Override
+    public Long unlinkStudent(long id) {
+        Student student = getStudentById(id);
+        long bootcampId = student.getBootcamp().getId();
+        student.setBootcamp(null);
+        saveStudent(student);
+        return bootcampId;
+    }
 
     private String findLecturer(Student student) {
         if (student.getBootcamp() != null) {

@@ -24,7 +24,7 @@ public class BootcampServiceImpl implements BootcampService {
 
     @Override
     public void saveBootcamp(Bootcamp bootcamp) {
-        Bootcamp save = bootcampRepository.save(bootcamp);
+         bootcampRepository.save(bootcamp);
 
     }
 
@@ -37,13 +37,4 @@ public class BootcampServiceImpl implements BootcampService {
     public void deleteBootcampById(long id) {
         bootcampRepository.deleteById(id);
     }
-
-
-    @Override
-    public Bootcamp updateBootcampInfoById(long idToUpdate, Bootcamp bootcampNewInf) {
-        Bootcamp bootcamp = getBootcampById(idToUpdate);
-        return null;
-    }
-
-
 }

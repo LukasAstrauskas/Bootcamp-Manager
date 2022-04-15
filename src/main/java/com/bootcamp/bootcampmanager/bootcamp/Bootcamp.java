@@ -46,7 +46,4 @@ public class Bootcamp {
 
     @ManyToMany(mappedBy = "managingBootcamp")
     List<Admin> adminList;
-
-    /*@ManyToMany(mappedBy = "bootCamps")
-    List<Course> coursesInCamp;*/
 }

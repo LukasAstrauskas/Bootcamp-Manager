@@ -1,9 +1,11 @@
 package com.bootcamp.bootcampmanager.lecturer;
 
-import com.bootcamp.bootcampmanager.student.Student;
+import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
+import com.bootcamp.bootcampmanager.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,5 +40,14 @@ public class LecturerServiceImp implements LecturerService{
     @Override
     public void deleteLecturerById(long id) {
         this.lecturerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Task> getLecturersTasks(long id) {
+        List<Task> tasksList = new ArrayList<>();
+        for (Bootcamp bootcamp : getLecturerById(id).getJoinedBootcamp()) {
+            tasksList.addAll(bootcamp.getTasks());
+        }
+        return tasksList;
     }
 }

@@ -18,48 +18,45 @@ import java.util.List;
 public class TaskController {
 
     @Autowired
-    public TaskService taskService;
+    private TaskService taskService;
 
     @Autowired
-    public FileDBService fileDBService;
+    private FileDBService fileDBService;
 
     @Autowired
-    public StudentService studentService;
+    private StudentService studentService;
 
     @Autowired
-    public LecturerService lecturerService;
+    private LecturerService lecturerService;
 
     @Autowired
-    public BootcampService bootcampService;
+    private BootcampService bootcampService;
 
     @GetMapping("/tasks")
     public String showAllTasks(Model model) {
-
-        List<Task> tasksList = taskService.getAllTasks();
-        model.addAttribute("tasksList", tasksList);
+        model.addAttribute("tasksList", taskService.getAllTasks());
         return "tasks";
     }
 
     @GetMapping("/new-task")
     public String showNewTaskForm(Model model) {
-        Bootcamp id = new Bootcamp();
-        Task task = new Task();
-        model.addAttribute("task", task);
-        model.addAttribute("id", id);
+        model.addAttribute("task", new Task());
+        model.addAttribute("id", new Bootcamp());
         model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
         return "new-task";
     }
 
     @PostMapping("/save-task")
-    public String saveTask(@ModelAttribute("bootcamp") Bootcamp bootcamp, @ModelAttribute("task") Task task, @RequestParam("file") MultipartFile[] files) {
+    public String saveTask(@ModelAttribute("bootcamp") Bootcamp bootcamp,
+                           @ModelAttribute("task") Task task,
+                           @RequestParam("file") MultipartFile[] files) {
         task.setFileDB(fileDBService.saveFile(files[0], task));
-        if(bootcamp.getId() != 0){
-            try{
+        if (bootcamp.getId() != 0) {
+            try {
                 Bootcamp camp = bootcampService.getBootcampById(bootcamp.getId());
                 task.setBootcamp(camp);
 
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println("\n\n\n\n Whoops!? Something went wrong!!!" + e.getMessage() + "\n\n\n\n");
             }
         }
@@ -68,41 +65,36 @@ public class TaskController {
     }
 
     @GetMapping("/update-task/{id}")
-    public String showTaskFormForUpdate(@PathVariable( value = "id") long id, Model model) {
-        Task task = taskService.getTaskById(id);
-        model.addAttribute("task", task);
+    public String showTaskFormForUpdate(@PathVariable(value = "id") long id,
+                                        Model model) {
+        model.addAttribute("task", taskService.getTaskById(id));
         return "update-task";
     }
 
     @GetMapping("/delete-task/{id}")
-    public String deleteTask(@PathVariable (value = "id") long id) {
+    public String deleteTask(@PathVariable(value = "id") long id) {
         this.taskService.deleteTaskById(id);
-        //fileDBService.deleteFileById(taskService.getTaskById(id).getFileDB().getId());
         return "redirect:/tasks";
     }
 
     @GetMapping("/task/{id}")
-    public String displayTaskPage(@PathVariable (value = "id") long id, Model model) {
-        Task task = taskService.getTaskById(id);
-
-        model.addAttribute("task", task);
+    public String displayTaskPage(@PathVariable(value = "id") long id,
+                                  Model model) {
+        model.addAttribute("task", taskService.getTaskById(id));
         return "task";
     }
 
     @GetMapping("/task-status/{id}")
-    public String showTaskCheckbox(@PathVariable( value = "id") long id, Model model) {
-        Task task = taskService.getTaskById(id);
-        model.addAttribute("taskStatus", task);
+    public String showTaskCheckbox(@PathVariable(value = "id") long id,
+                                   Model model) {
+        model.addAttribute("taskStatus", taskService.getTaskById(id));
         return "task";
     }
 
     @GetMapping("/lecturer-tasks/{id}")
-    public String showLecturerTasks(@PathVariable( value = "id") long id, Model model) {
-
-        List<Task> tasksList = new ArrayList<>();
-        for(Bootcamp bootcamp : lecturerService.getLecturerById(id).getJoinedBootcamp())
-                tasksList.addAll(bootcamp.getTasks());
-        model.addAttribute("tasksList", tasksList);
+    public String showLecturerTasks(@PathVariable(value = "id") long id,
+                                    Model model) {
+        model.addAttribute("tasksList", lecturerService.getLecturersTasks(id));
         model.addAttribute("thisLecturer", lecturerService.getLecturerById(id));
         return "lecturer-tasks";
     }

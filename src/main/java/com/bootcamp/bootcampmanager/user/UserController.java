@@ -45,27 +45,22 @@ public class UserController {
 
     @GetMapping("/users")
     public String showAllUsers(Model model) {
-        List<Admin> adminsList = adminService.getAllAdmins();
-        model.addAttribute("adminsList", adminsList);
-        List<Lecturer> lecturersList = lecturerService.getAllLecturers();
-        model.addAttribute("lecturersList", lecturersList);
-        List<Student> studentsList = studentService.getAllStudents();
-        model.addAttribute("studentsList", studentsList);
         Counter counter = new Counter();
+        model.addAttribute("adminsList", adminService.getAllAdmins());
+        model.addAttribute("lecturersList", lecturerService.getAllLecturers());
+        model.addAttribute("studentsList", studentService.getAllStudents());
         model.addAttribute("counter", counter);
         return "users";
     }
 
     @GetMapping("/new-user")
     public String showNewUserForm(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("user", new User());
         return "new-user";
     }
 
     @PostMapping("/save-user")
     public String saveUser(@ModelAttribute("user") User user, Model model) {
-        user.setEnabled(true);
         if (user.getRoles() == null)
             return "redirect:/users";
         for (User i : userService.getAllUsers())
@@ -83,7 +78,7 @@ public class UserController {
 
         if (user.getRoles().equals("ROLE_ADMIN")) {
             passwordGeneratorService.generateRandomPassword(user);
-            Admin admin = new Admin(user);
+            Admin admin = new Admin(user.getFirstName(), user.getLastName(), user.getEmail());
 
 //            Hashing password, Encoder gives customized passwordencoder
             String encodedPassword = Encoder.get().encode(admin.getPassword());
@@ -92,7 +87,7 @@ public class UserController {
             adminService.saveAdmin(admin);
         } else if (user.getRoles().equals("ROLE_STUDENT")) {
             passwordGeneratorService.generateRandomPassword(user);
-            Student student = new Student(user);
+            Student student = new Student(user.getFirstName(), user.getLastName(), user.getEmail());
 
             //            Hashing password, Encoder gives customized passwordencoder
             String encodedPassword = Encoder.get().encode(student.getPassword());
@@ -101,7 +96,7 @@ public class UserController {
             studentService.saveStudent(student);
         } else if (user.getRoles().equals("ROLE_LECTURER")) {
             passwordGeneratorService.generateRandomPassword(user);
-            Lecturer lecturer = new Lecturer(user);
+            Lecturer lecturer = new Lecturer(user.getFirstName(), user.getLastName(), user.getEmail());
 
             //           Hashing password, Encoder gives customized passwordencoder
             String encodedPassword = Encoder.get().encode(lecturer.getPassword());
@@ -122,9 +117,9 @@ public class UserController {
     }
 
     @GetMapping("/update-user/{id}")
-    public String showUserFormForUpdate(@PathVariable(value = "id") long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
+    public String showUserFormForUpdate(@PathVariable(value = "id") long id,
+                                        Model model) {
+        model.addAttribute("user", userService.getUserById(id));
         return "update-user";
     }
 

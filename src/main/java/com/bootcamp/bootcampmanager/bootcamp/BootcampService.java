@@ -13,6 +13,4 @@ public interface BootcampService {
 
     void deleteBootcampById(long id);
 
-    Bootcamp updateBootcampInfoById(long idToUpdate, Bootcamp bootcampNewInf);
-
 }
