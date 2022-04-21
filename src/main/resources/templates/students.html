@@ -49,7 +49,7 @@
                                    aria-haspopup="true" aria-expanded="false"><i
                                         class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
-                                    <a class="dropdown-item dropdown-item-lecturer" href="/user">My profile</a>
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
                                     <a class="dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -67,188 +67,97 @@
 <div class="section full-height">
     <div class="section" style="padding-top: 80px">
         <div class="container">
-            <div>
-                <h2>Bootcamps assigned for lecturer <td th:text="${thisLecturer.getFirstName()}" </h2>
+
+            <div class="btn-group">
+                <button id="active-s" onclick="showLecturerBootcampStudents()" type="button" class="btn custom-tab custom-tab-active"> Students </button>
+                <button id="active-b" onclick="showLecturerBootcamps()" type="button" class="btn custom-tab"> Bootcamps </button>
+                <!--<a th:href="@{/new-lecturer-task}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Task</a>-->
+            </div>
+            <br/><br/>
+
+            <!-- Students content -->
+            <div th:id="students">
+                <div>
+                    <h2> My students </h2>
+                </div>
+                <br/>
+
+                <!-- Table -->
+                <div>
+                    <table border="1" class="table table-striped table-responsive-md">
+                        <!-- Table header -->
+                        <thead>
+                        <tr>
+                            <th> #</th>
+                            <th> First name </th>
+                            <th> Last name </th>
+                            <th> Email </th>
+                            <th> Bootcamp </th>
+                            <th> Actions </th>
+                        </tr>
+                        </thead>
+                        <!-- Table rows -->
+                        <tbody>
+                        <tr th:each="student : ${studentsList}">
+                            <td th:text="${studentsList.indexOf(student)+1}"></td>
+
+                            <td th:text="${student.getFirstName()}"></td>
+
+                            <td th:text="${student.getLastName()}"></td>
+                            <td th:text="${student.getEmail()}"></td>
+                            <td th:text="${student.getBootcamp().getName()}"></td>
+
+                            <td>
+                                <!-- Open student page button  -->
+                                <a th:href="@{/info-student/{id}(id=${student.id})}" class="btn btn-warning">Open</a>
+
+                                <a th:href="@{/update-student/{id}(id=${student.id})}" class="btn btn-primary"><i
+                                        class="fa-solid fa-pencil"></i></a>
+                                <!-- Delete button -->
+                                <!--                            <a th:href="@{/delete-student/{id}(id=${student.id})}" class="btn btn-danger"><i-->
+                                <!--                                    class="fa-solid fa-trash-can"></i></a>-->
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
+            <!-- Bootcamps content -->
+            <div th:id="bootcamps" style="display: none">
+                <div>
+                    <h2> My bootcamps </h2>
+                </div>
+                <br/>
 
-
-
-            <!--            <form action="#" th:action="@{/sorted-students}" th:object="${searchInfo}" method="post">-->
-            <!--                <table>-->
-            <!--                    <tbody>-->
-            <!--                    <tr>-->
-            <!--                        <td>-->
-            <!--                            <select th:field="*{campId}" class="dropdown form-control" id="bootcampList">-->
-            <!--                                <option value="0" selected>Select Bootcamp</option>-->
-            <!--                                <option th:each="bootcamp: ${bootcampList}"-->
-            <!--                                        th:value="${bootcamp.id}">-->
-            <!--                                    <a th:text="${bootcamp.name}"></a>-->
-            <!--                                </option>-->
-            <!--                            </select>-->
-            <!--                        </td>-->
-            <!--                        <td>-->
-            <!--                            <select th:field="*{taskId}" class="dropdown form-control" id="taskList">-->
-            <!--                                <option value="0" selected>Select Task</option>-->
-            <!--                                <option th:each="task : ${taskList}" th:value="${task.id}"-->
-            <!--                                        th:text="${task.name}"></option>-->
-            <!--                            </select>-->
-            <!--                        </td>-->
-            <!--                        <td>-->
-
-            <!--                            <button type="submit" class="btn btn-warning"> Apply Filter</button>-->
-            <!--                            &lt;!&ndash;                         <a th:href="@{/students/{id}(id=bootcampList.value)}" class="btn btn-warning">Open</a>&ndash;&gt;-->
-
-            <!--                            <button type="submit" class="btn btn-warning"> Show Students</button>-->
-            <!--&lt;!&ndash;                         <a th:href="@{/students/{id}(id=bootcampList.value)}" class="btn btn-warning">Open</a>&ndash;&gt;-->
-
-            <!--                        </td>-->
-            <!--                    </tr>-->
-            <!--                    </tbody>-->
-            <!--                </table>-->
-            <!--            </form>-->
-
-            <br/>
-
-            <!-- Table -->
-            <div>
-                <table border="1" class="table table-striped table-responsive-md">
-                    <!-- Table header -->
-                    <thead>
-                    <tr>
-                        <th> #</th>
-
-                        <th> Title</th>
-                        <th> Start Date</th>
-
-                        <th> End Date</th>
-                    </tr>
-                    </thead>
-                    <!-- Table rows -->
-                    <tbody>
-                    <tr th:each="bootcamp : ${bootcampsList}">
-                        <td th:text="${bootcampsList.indexOf(bootcamp)+1}"></td>
-
-                        <td th:text="${bootcamp.getName()}"></td>
-
-                        <td th:text="${bootcamp.getDateFrom().toGMTString()}"></td>
-                        <td th:text="${bootcamp.getDateTo().toGMTString()}"></td>
-
-<!--                        <td>-->
-<!--                            &lt;!&ndash; Open student page button  &ndash;&gt;-->
-<!--                            <a th:href="@{/info-student/{id}(id=${student.id})}" class="btn btn-warning">Open</a>-->
-<!--                            &lt;!&ndash; Edit button &ndash;&gt;-->
-
-<!--                            &lt;!&ndash; <a th:href="@{/update-student/{id}(id=${student.id})}" class="btn btn-primary"><i &ndash;&gt;-->
-<!--                            &lt;!&ndash; class="fa-solid fa-pencil"></i></a> &ndash;&gt;-->
-<!--                            &lt;!&ndash; Delete button &ndash;&gt;-->
-<!--                            &lt;!&ndash; <a th:href="@{/delete-student/{id}(id=${student.id})}" class="btn btn-danger"><i &ndash;&gt;-->
-<!--                            &lt;!&ndash; class="fa-solid fa-trash-can"></i></a> &ndash;&gt;-->
-
-<!--                            <a th:href="@{/update-student/{id}(id=${student.id})}" class="btn btn-primary"><i-->
-<!--                                    class="fa-solid fa-pencil"></i></a>-->
-<!--                            &lt;!&ndash; Delete button &ndash;&gt;-->
-<!--                            <a th:href="@{/delete-student/{id}(id=${student.id})}" class="btn btn-danger"><i-->
-<!--                                    class="fa-solid fa-trash-can"></i></a>-->
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <!-- Table -->
+                <div>
+                    <table border="1" class="table table-striped table-responsive-md">
+                        <!-- Table header -->
+                        <thead>
+                        <tr>
+                            <th> #</th>
+                            <th> Title</th>
+                            <th> Start Date</th>
+                            <th> End Date</th>
+                            <th> Number of students </th>
+                        </tr>
+                        </thead>
+                        <!-- Table rows -->
+                        <tbody>
+                        <tr th:each="bootcamp : ${bootcampsList}">
+                            <td th:text="${bootcampsList.indexOf(bootcamp)+1}"></td>
+                            <td th:text="${bootcamp.getName()}"></td>
+                            <td th:text="${bootcamp.getDateFrom().toGMTString()}"></td>
+                            <td th:text="${bootcamp.getDateTo().toGMTString()}"></td>
+                            <td th:text="${bootcamp.getStudents().size()}"></td>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <br/>
-            <br/>
-            <div>
-                <h2>Students enrolled in all bootcamps for lecturer <td th:text="${thisLecturer.getFirstName()}"></td> </h2>
-            </div>
-
-
-
-<!--            &lt;!&ndash; Add button &ndash;&gt;-->
-<!--            <div sec:authorize="hasAnyRole('ADMIN', 'LECTURER')">-->
-<!--                <a th:href="@{/new-student}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add </a>-->
-<!--            </div>-->
-
-
-
-<!--            <form action="#" th:action="@{/sorted-students}" th:object="${searchInfo}" method="post">-->
-<!--                <table>-->
-<!--                    <tbody>-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <select th:field="*{campId}" class="dropdown form-control" id="bootcampList">-->
-<!--                                <option value="0" selected>Select Bootcamp</option>-->
-<!--                                <option th:each="bootcamp: ${bootcampList}"-->
-<!--                                        th:value="${bootcamp.id}">-->
-<!--                                    <a th:text="${bootcamp.name}"></a>-->
-<!--                                </option>-->
-<!--                            </select>-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <select th:field="*{taskId}" class="dropdown form-control" id="taskList">-->
-<!--                                <option value="0" selected>Select Task</option>-->
-<!--                                <option th:each="task : ${taskList}" th:value="${task.id}"-->
-<!--                                        th:text="${task.name}"></option>-->
-<!--                            </select>-->
-<!--                        </td>-->
-<!--                        <td>-->
-
-<!--                            <button type="submit" class="btn btn-warning"> Apply Filter</button>-->
-<!--                            &lt;!&ndash;                         <a th:href="@{/students/{id}(id=bootcampList.value)}" class="btn btn-warning">Open</a>&ndash;&gt;-->
-
-<!--                            <button type="submit" class="btn btn-warning"> Show Students</button>-->
-<!--&lt;!&ndash;                         <a th:href="@{/students/{id}(id=bootcampList.value)}" class="btn btn-warning">Open</a>&ndash;&gt;-->
-
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
-<!--            </form>-->
-
-            <br/>
-
-            <!-- Table -->
-            <div>
-                <table border="1" class="table table-striped table-responsive-md">
-                    <!-- Table header -->
-                    <thead>
-                    <tr>
-                        <th> #</th>
-
-                        <th> Name</th>
-                        <th> Surname</th>
-                        <th> email</th>
-                        <th> bootcamp</th>
-                        <th> Actions</th>
-                    </tr>
-                    </thead>
-                    <!-- Table rows -->
-                    <tbody>
-                    <tr th:each="student : ${studentsList}">
-                        <td th:text="${studentsList.indexOf(student)+1}"></td>
-
-                        <td th:text="${student.getFirstName()}"></td>
-
-                        <td th:text="${student.getLastName()}"></td>
-                        <td th:text="${student.getEmail()}"></td>
-                        <td th:text="${student.getBootcamp().getName()}"></td>
-
-                        <td>
-                            <!-- Open student page button  -->
-                            <a th:href="@{/info-student/{id}(id=${student.id})}" class="btn btn-warning">Open</a>
-
-                            <a th:href="@{/update-student/{id}(id=${student.id})}" class="btn btn-primary"><i
-                                    class="fa-solid fa-pencil"></i></a>
-                            <!-- Delete button -->
-<!--                            <a th:href="@{/delete-student/{id}(id=${student.id})}" class="btn btn-danger"><i-->
-<!--                                    class="fa-solid fa-trash-can"></i></a>-->
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <br/>
 
         </div>
     </div>

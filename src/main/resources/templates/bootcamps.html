@@ -43,7 +43,7 @@
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                     <div class="dropdown-menu">
                                         <!-- redirect to logged-in user's user page-->
-                                        <a class="dropdown-item" href="/user">My profile</a>
+                                        <a class="dropdown-item" th:href = "@{'profile'}">My profile</a>
                                         <a class="dropdown-item" href="/logout">Logout</a>
                                     </div>
                                 </li>
@@ -107,7 +107,7 @@
                                 <!-- Edit button -->
                                 <a th:href="@{/update-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                 <!-- Delete button -->
-                                <a th:if="${bootcamp.students.isEmpty() || bootcamp.campLecturers.isEmpty() || bootcamp.tasks.isEmpty()}" th:href="@{/delete-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                                <a th:if="${bootcamp.students.size() == 0 && bootcamp.campLecturers.size() == 0 && bootcamp.tasks.size() == 0}" th:href="@{/delete-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
                         </tr>
                         </tbody>

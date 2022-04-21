@@ -41,7 +41,7 @@
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/user">My profile</a>
+                                    <a class="dropdown-item" href="/profile">My profile</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -80,13 +80,13 @@
                     <input type="hidden" th:field="*{id}"/>
 
                     <a> Name </a>
-                    <input type="text" th:field="*{name}" class="form-control mb-4 col-4">
+                    <input type="text" th:field="*{name}" required class="form-control mb-4 col-4">
 
                     <a> Start date </a>
-                    <input type="date" th:field="*{dateFrom}" class="form-control mb-4 col-4">
+                    <input type="date" th:field="*{dateFrom}" required class="form-control mb-4 col-4">
 
                     <a> End date </a>
-                    <input type="date" th:field="*{dateTo}" class="form-control mb-4 col-4">
+                    <input type="date" th:field="*{dateTo}" required class="form-control mb-4 col-4">
 
                     <!-- Save button -->
                     <button type="submit" class="btn btn-info col-2"> Update </button>

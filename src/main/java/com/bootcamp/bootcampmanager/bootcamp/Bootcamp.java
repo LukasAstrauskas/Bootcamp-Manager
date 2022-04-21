@@ -38,12 +38,16 @@ public class Bootcamp {
     @OneToMany(mappedBy = "bootcamp")
     private List<Student> students;
 
-    @OneToMany(mappedBy = "bootcamp", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bootcamp", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Task> tasks;
 
     @ManyToMany(mappedBy = "joinedBootcamp")
-    List<Lecturer> campLecturers;
+    private List<Lecturer> campLecturers;
 
     @ManyToMany(mappedBy = "managingBootcamp")
-    List<Admin> adminList;
+    private List<Admin> adminList;
+
+    public Bootcamp(String name) {
+        this.name = name;
+    }
 }

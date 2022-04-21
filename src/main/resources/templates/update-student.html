@@ -15,14 +15,13 @@
 <body class="hero-anime">
 
 <!-- Top navigation bar -->
-<div class="navigation-wrap bg-light start-header start-style">
+<div class="navigation-wrap bg-light-lecturer start-header start-style">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="navbar navbar-expand-md navbar-light">
 
-                    <a class="navbar-brand navbar-logo" href="/bootcamps" sec:authorize="hasRole('ADMIN')">Bootcamp Manager</a>
-                    <a class="navbar-brand navbar-logo" href="/students" sec:authorize="hasRole('LECTURER')">Bootcamp Manager</a>
+                    <a class="navbar-brand navbar-logo" href="/students">Bootcamp Manager</a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -30,23 +29,19 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasAnyRole('ADMIN')">
-                                <a class="nav-link" href="/bootcamps">Bootcamps</a>
-                            </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasRole('ADMIN')">
-                                <a class="nav-link" href="/users">Users</a>
-                            </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasRole('LECTURER')">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/students">Students</a>
                             </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')">
-                                <a class="nav-link" href="/tasks">Tasks</a>
-                            </li>
+                            <!--<li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                &lt;!&ndash; Need to redirect to this lecturer-tasks.html page &ndash;&gt;
+                                &lt;!&ndash;<a class="nav-link" th:href="@{/lecturer-tasks/{id}(id=${thisLecturer.id})}">Tasks</a>&ndash;&gt;
+                                &lt;!&ndash;<a style="color: red!important;" class="nav-link">Tasks</a>&ndash;&gt;
+                            </li>-->
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/user">My profile</a>
-                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                <div class="dropdown-menu dropdown-menu-lecturer">
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
+                                    <a class=" dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -66,15 +61,15 @@
 
             <!-- Title -->
             <div>
-                <h2> Edit student </h2>
+                <h2> Edit student "<a th:text="${student.firstName + ' ' + student.lastName}"></a>" </h2>
             </div>
 
             <br/>
 
             <!-- Back button -->
             <div>
-                <a class="btn btn-warning" th:href="@{/users}" role="button" sec:authorize="hasRole('ADMIN')"> Back </a>
-                <a class="btn btn-warning" th:href="@{/students}" role="button" sec:authorize="hasRole('LECTURER')"> Back </a>
+
+                <a class="btn btn-warning" th:href="@{/students}" role="button"> Back </a>
             </div>
 
             <br/>
@@ -85,16 +80,27 @@
                     <input type="hidden" th:field="*{id}"/>
 
                     <a> First name </a>
-                    <input type="text" th:field="*{firstName}" class="form-control mb-4 col-4">
+                    <input type="text" th:field="*{firstName}" required class="form-control mb-4 col-4">
 
                     <a> Last name </a>
-                    <input type="text" th:field="*{lastName}" class="form-control mb-4 col-4">
+                    <input type="text" th:field="*{lastName}" required class="form-control mb-4 col-4">
 
                     <a> Email </a>
-                    <input type="email" th:field="*{email}" class="form-control mb-4 col-4">
+                    <input type="email" th:field="*{email}" required class="form-control mb-4 col-4">
 
-                    <a> Bootcamp id </a>
-                    <input type="text" th:field="${student.bootcamp.id}" class="form-control mb-4 col-4">
+                    <!--<a> Bootcamp id </a>
+                    <input type="text" th:field="${student.bootcamp.id}" required class="form-control mb-4 col-4">-->
+
+                    <!-- Select a bootcamp -->
+                    <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">
+                        <a> Bootcamp </a>
+                        <select type="number" th:field="${student.bootcamp.id}" class="dropdown form-control">
+                            <tr th:each="b : ${bootcamps}">
+                                <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>
+
+                            </tr>
+                        </select>
+                    </div>
 
                     <button type="submit" class="btn btn-info col-2"> Update </button>
                 </form>

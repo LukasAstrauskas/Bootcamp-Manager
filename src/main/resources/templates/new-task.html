@@ -15,15 +15,13 @@
 <body class="hero-anime">
 
 <!-- Top navigation bar -->
-<!-- NEED TO ADD CUSTOM CSS FOR ADMIN AND LECTURER -->
-<div class="navigation-wrap bg-light start-header start-style">
+<div class="navigation-wrap bg-light start-header start-style" sec:authorize="hasRole('ADMIN')">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="navbar navbar-expand-md navbar-light">
 
-                    <a class="navbar-brand navbar-logo" href="/bootcamps" sec:authorize="hasRole('ADMIN')">Bootcamp Manager</a>
-                    <a class="navbar-brand navbar-logo" href="/students" sec:authorize="hasRole('LECTURER')">Bootcamp Manager</a>
+                    <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -31,25 +29,58 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasRole('ADMIN')">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/bootcamps">Bootcamps</a>
                             </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasRole('ADMIN')">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/users">Users</a>
-                            </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" sec:authorize="hasRole('LECTURER')">
-                                <a class="nav-link" href="/students">Students</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/tasks">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
-                                <!-- NEED TO ADD CUSTOM CSS FOR ADMIN AND LECTURER -->
                                 <div class="dropdown-menu">
-                                    <!-- NEED TO ADD CUSTOM CSS FOR ADMIN AND LECTURER -->
-                                    <a class="dropdown-item" href="/user">My profile</a>
+                                    <a class="dropdown-item" href="/profile">My profile</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="navigation-wrap bg-light-lecturer start-header start-style" sec:authorize="hasRole('LECTURER')">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <a class="navbar-brand navbar-logo" href="/students">Bootcamp Manager</a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto py-4 py-md-0">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" >
+                                <a class="nav-link" href="/students">Students</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <!-- Need to redirect to this lecturer-tasks.html page -->
+                                <!--<a class="nav-link" th:href="@{/lecturer-tasks/{id}(id=${thisLecturer.id})}">Tasks</a>-->
+                                <a style="color: red!important;" class="nav-link">Tasks</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <div class="dropdown-menu dropdown-menu-lecturer">
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -74,9 +105,11 @@
 
             <br/>
 
-            <!-- Back button -->
             <div>
-                <a class="btn btn-warning" th:href="@{/tasks}" role="button"> Back </a>
+                <!-- Back button -->
+                <!-- Need to redirect to this lecturer-tasks.html page -->
+                <a th:href = "@{/tasks}" class="btn btn-warning"> Back </a>
+                <!--<a style="color: red!important;" class="btn btn-warning"> Back </a>-->
             </div>
 
             <br/>
@@ -87,7 +120,7 @@
                     <!-- Add name -->
                     <a> Name </a>
                     <input type="text" th:field="${task.name}"
-                           required class="form-control mb-4 col-4">
+                           placeholder="Name" required class="form-control mb-4 col-4">
 
                     <!-- Add description -->
                     <a> Description </a>
@@ -114,7 +147,7 @@
 
                     <!-- Select a bootcamp -->
                     <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">
-                        <a> Select Bootcamp </a>
+                        <a> Bootcamp </a>
                         <select type="number" th:field="${task.bootcamp.id}" class="dropdown form-control">
                             <tr th:each="b : ${bootcamps}">
                                 <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>
@@ -127,6 +160,7 @@
                     <div>
                         <button type="submit" value="Upload" class="btn btn-info col-2"> Save </button>
                     </div>
+                    <br>
 
                 </form>
             </div>

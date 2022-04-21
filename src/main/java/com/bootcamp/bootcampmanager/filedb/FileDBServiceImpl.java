@@ -18,7 +18,11 @@ public class FileDBServiceImpl implements FileDBService{
         String fileName = file.getOriginalFilename();
         try {
             FileDB fileDB = new FileDB(fileName,file.getContentType(),file.getBytes(), task);
-            return fileDBRepository.save(fileDB);
+            if(fileDB.getType().equals("application/octet-stream")) {
+                return null;
+            } else {
+                return fileDBRepository.save(fileDB);
+            }
         }
         catch(Exception e) {
             e.printStackTrace();

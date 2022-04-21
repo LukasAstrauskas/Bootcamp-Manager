@@ -3,7 +3,10 @@ package com.bootcamp.bootcampmanager.task;
 import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
 import com.bootcamp.bootcampmanager.bootcamp.BootcampService;
 import com.bootcamp.bootcampmanager.filedb.FileDBService;
+import com.bootcamp.bootcampmanager.lecturer.Lecturer;
 import com.bootcamp.bootcampmanager.lecturer.LecturerService;
+import com.bootcamp.bootcampmanager.student.Student;
+import com.bootcamp.bootcampmanager.student.StudentHelper;
 import com.bootcamp.bootcampmanager.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Controller
 public class TaskController {
@@ -92,10 +97,65 @@ public class TaskController {
     }
 
     @GetMapping("/lecturer-tasks/{id}")
-    public String showLecturerTasks(@PathVariable(value = "id") long id,
-                                    Model model) {
-        model.addAttribute("tasksList", lecturerService.getLecturersTasks(id));
-        model.addAttribute("thisLecturer", lecturerService.getLecturerById(id));
+    public String showLecturerTasks(@PathVariable( value = "id") long id, Model model) {
+
+        Lecturer thisLecturer = lecturerService.getLecturerById(id);
+        List<Task> tasksList = new ArrayList<>();
+        FilterContainer filterContainer = new FilterContainer( -1);
+        System.out.println("\n\n From Getter!!!!" + filterContainer.getTask() + "\n\n\n\n");
+        if(filterContainer.showTable() && filterContainer.getTask() > 0){
+            Task task = taskService.getTaskById(filterContainer.getTask());
+            List<Student> students = task.getBootcamp().getStudents();
+            model.addAttribute("task", task);
+            model.addAttribute("students", students);
+            model.addAttribute("helper", new StudentHelper(studentService));
+        }
+
+
+        for(Bootcamp bootcamp : lecturerService.getLecturerById(id).getJoinedBootcamp())
+                tasksList.addAll(bootcamp.getTasks());
+        model.addAttribute("filterContainer", filterContainer);
+        model.addAttribute("id", id);
+        model.addAttribute("tasksList", tasksList);
+        model.addAttribute("bootcamps", thisLecturer.getJoinedBootcamp());
+        model.addAttribute("thisLecturer", thisLecturer);
         return "lecturer-tasks";
+    }
+
+    @PostMapping(path = "/filter/{id}")
+    public String Filter(@PathVariable( value = "id") long id, @ModelAttribute("FilterContainer") FilterContainer filterContainer, Model model) {
+
+        filterContainer.setShow();
+        filterContainer.setId(filterContainer.getSelectedTask());
+        System.out.println("\n\n From poster!!!" + filterContainer.getSelectedTask() +  "\n\n\n\n");
+
+        return "redirect:/lecturer-tasks/" + id;
+    }
+
+    @GetMapping("/new-lecturer-task")
+    public String showNewLecturerTaskForm(Model model) {
+        Bootcamp id = new Bootcamp();
+        Task task = new Task();
+        model.addAttribute("task", task);
+        model.addAttribute("id", id);
+        model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
+        return "new-lecturer-task";
+    }
+
+    @PostMapping("/save-lecturer-task")
+    public String saveLecturerTask(@ModelAttribute("bootcamp") Bootcamp bootcamp, @ModelAttribute("task") Task task, @RequestParam("file") MultipartFile[] files) {
+        task.setFileDB(fileDBService.saveFile(files[0], task));
+        if(bootcamp.getId() != 0){
+            try{
+                Bootcamp camp = bootcampService.getBootcampById(bootcamp.getId());
+                task.setBootcamp(camp);
+
+            }
+            catch(Exception e){
+                System.out.println("\n\n\n\n Whoops!? Something went wrong!!!" + e.getMessage() + "\n\n\n\n");
+            }
+        }
+        taskService.saveTask(task);
+        return "redirect:/students";
     }
 }

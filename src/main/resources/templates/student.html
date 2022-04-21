@@ -31,7 +31,7 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/students">Students</a>
                             </li>
                             <!-- NEED TO FIX THIS -->
@@ -43,7 +43,7 @@
                                    aria-haspopup="true" aria-expanded="false"><i
                                         class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
-                                    <a class="dropdown-item dropdown-item-lecturer" href="/user">My profile</a>
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
                                     <a class="dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -83,54 +83,62 @@
             <!-- Table -->
             <div th:object="${student}">
                 <table border="1" class="table table-striped table-responsive-md">
-                    <!-- Table header -->
-                    <thead>
-                    <tr>
-                        <th> Student Id </th>
-                        <th th:text="${student.getId()}"></th>
-                    </tr>
-                    </thead>
                     <!-- Table rows -->
                     <tbody>
                     <tr>
-                        <td> First name </td>
-                        <th th:text="${student.getFirstName()}"></th>
+                        <td class="font-weight-bold"> First name </td>
+                        <th class="font-weight-normal" th:text="${student.getFirstName()}"></th>
                     </tr>
 
                     <tr>
-                        <td> Last name </td>
-                        <th th:text="${student.getLastName()}"></th>
+                        <td class="font-weight-bold"> Last name </td>
+                        <th class="font-weight-normal" th:text="${student.getLastName()}"></th>
                     </tr>
 
                     <tr>
-                        <td> Email </td>
-                        <th th:text="${student.getEmail()}"></th>
+                        <td class="font-weight-bold"> Email </td>
+                        <th class="font-weight-normal" th:text="${student.getEmail()}"></th>
                     <tr>
-                        <td> Enrolled Bootcamp </td>
-                        <th th:text="${student.getBootcamp().getName()}"></th>
+                        <td class="font-weight-bold"> Bootcamp </td>
+                        <th class="font-weight-normal" th:text="${student.getBootcamp().getName()}"></th>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Number of tasks </td>
+                        <th class="font-weight-normal" th:text="${student.getBootcamp().getTasks().size()}"></th>
                     </tr>
 
                     </tbody>
                 </table>
             </div>
+            <br/>
 
+            <div>
+                <!--<h2> Student "<a th:text="${student.firstName}"></a>" tasks </h2>-->
+                <h2> Tasks </h2>
+            </div>
             <br/>
 
             <!-- Table -->
-            <div th:object="${student}">
+            <div th:if="${student.getBootcamp().getTasks().size() > 0}" th:object="${student}">
                 <table border="1" class="table table-striped table-responsive-md">
                     <!-- Table header -->
                     <thead>
-                    <tr>
-                        <th> Tasks for <a th:text="${student.getFirstName()}"></a> in bootcamp <a th:text="${student.getBootcamp().getName()}"></a> </th>
-                        <th> Task Status </th>
-                    </tr>
+                        <tr>
+                            <th class="font-weight-bold"> #</th>
+                            <th class="font-weight-bold"> Task </th>
+                            <th class="font-weight-bold"> Description </th>
+                            <th class="font-weight-bold"> Deadline </th>
+                            <th class="font-weight-bold"> Status </th>
+                        </tr>
                     </thead>
                     <!-- Table rows -->
                     <tbody>
-                    <tr th:each="task : ${student.getBootcamp().getTasks()}">
-                        <td th:text="${task.getName()}"></td>
-                        <th th:text="${helper.isTaskCompleted(task.getId(), student.getId())}"></th>
+                    <tr th:each="task : ${student.bootcamp.tasks}">
+                        <th class="font-weight-normal" th:text="${student.bootcamp.tasks.indexOf(task)+1}"></th>
+                        <td class="font-weight-normal" th:text="${task.name}"></td>
+                        <td class="font-weight-normal" th:text="${task.description}"></td>
+                        <td class="font-weight-normal" th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
+                        <th class="font-weight-normal" th:text="${helper.isTaskCompleted(task.getId(), student.getId())}"></th>
                     </tr>
                     <tr>
 

@@ -21,55 +21,34 @@ public class StudentHomepageController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    StatusRepository statusRepository;
+
 
     @GetMapping("/student-homepage")
     public String showStudentTasks(Model model, Principal principal) {
+//        Getting studend by using principal and Repository method "findStudentByEmail"
+        Student student = studentService.getStudentByEmail(principal.getName());
 
-        List<Student> allStudents = studentService.getAllStudents();
-        for (Student student : allStudents)
-            if (student.getEmail().equals(principal.getName())) {
-                List<Task> tasksList = new ArrayList<>();
-                if (student.getBootcamp() != null)
-                    tasksList.addAll(student.getBootcamp().getTasks());
-                model.addAttribute("thisStudent", student);
-                model.addAttribute("tasksList", tasksList);
-                model.addAttribute("helper", new StudentHelper(studentService));
-                break;
-            }
+        model.addAttribute("student", student);
         return "student-homepage";
     }
 
-    @GetMapping("/student-task/{id}/{studentId}")
-    public String displayTaskPage(@PathVariable(value = "id") long id,
-                                  @PathVariable(value = "studentId") long studentId,
+    @GetMapping("/student-task/{taskId}")
+    public String displayTaskPage(@PathVariable("taskId") long taskId,
                                   Model model) {
-        Task task = taskService.getTaskById(id);
+        Task task = taskService.getTaskById(taskId);
+
         model.addAttribute("task", task);
-        model.addAttribute("thisStudent", studentService.getStudentById(studentId));
-        model.addAttribute("link", "resource link: ");
-        model.addAttribute("helper", new StudentHelper(studentService));
         return "student-task";
     }
 
-    @GetMapping("/set-task-completed/{id}/{studentId}")
-    public String setTaskCompleted(@PathVariable(value = "id") long id,
-                                   @PathVariable(value = "studentId") long studentId
-    ) {
-        Student thisStudent = studentService.getStudentById(studentId);
-        thisStudent.setTaskCompleted(taskService.getTaskById(id));
-        studentService.saveStudent(thisStudent);
+    @GetMapping("/changeStatus/{id}")
+    public String changeStudentTaskStatus(@PathVariable("id") long studentTaskId) {
+        StudentTaskStatus byId = statusRepository.getById(studentTaskId);
+        Boolean status = byId.getStatus();
+        byId.setStatus(!status);
+        statusRepository.save(byId);
         return "redirect:/student-homepage";
     }
-
-    @GetMapping("/unset-task-completed/{id}/{studentId}")
-    public String unsetTaskCompleted(@PathVariable(value = "id") long id,
-                                     @PathVariable(value = "studentId") long studentId
-    ) {
-        Student thisStudent = studentService.getStudentById(studentId);
-        thisStudent.unsetTaskCompleted(taskService.getTaskById(id));
-        studentService.saveStudent(thisStudent);
-        return "redirect:/student-homepage";
-    }
-
-
 }

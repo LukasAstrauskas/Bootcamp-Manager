@@ -35,7 +35,7 @@
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/users">Users</a>
                             </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/tasks">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
@@ -71,11 +71,11 @@
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" >
                                 <a class="nav-link" href="/students">Students</a>
                             </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <!-- Need to redirect to this lecturer-tasks.html page -->
-                                <a class="nav-link" th:href="@{/lecturers/{id}(id=${thisLecturer.id})/tasks/{taskId}(taskId=${task.id})}">Tasks</a>
-                                <!--<a style="color: red!important;" class="nav-link">Tasks</a>-->
-                            </li>
+                            <!--<li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                &lt;!&ndash; Need to redirect to this lecturer-tasks.html page &ndash;&gt;
+                                <a class="nav-link" th:href="@{/lecturer-tasks/{id}(id=${thisLecturer.id})}">Tasks</a>
+                                <a style="color: red!important;" class="nav-link">Tasks</a>
+                            </li>-->
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
@@ -98,8 +98,9 @@
     <div class="section" style="padding-top: 80px">
         <div class="container">
 
+            <!-- Title -->
             <div>
-                <h2>Task</h2>
+                <h2> Add task </h2>
             </div>
 
             <br/>
@@ -108,84 +109,65 @@
                 <!-- Back button -->
                 <!-- Need to redirect to this lecturer-tasks.html page -->
                 <!--<a th:href = "@{/tasks}" class="btn btn-warning"> Back </a>-->
-                <a style="color: red!important;" class="btn btn-warning"> Back </a>
-
-                <!-- Mark as completed button -->
-                <!--<button type="button" class="btn btn-success"> Mark as completed </button>-->
-                <!--<form action="#" th:action="@{/save-task}" th:object="${task}" method="POST">
-                    <input type="checkbox" th:checked="${task.isCompleted() ? false : true}"/>
-                    <button type="submit" class="btn btn-info col-2"> Save </button>
-                </form>-->
-
-                <!-- Edit button for ADMIN and LECTURER-->
-                <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
-
-                <!-- Delete button for ADMIN and LECTURER -->
-                <!--<a th:href="@{/delete-task/{id}(id=${task.id})}" class="btn btn-danger" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-trash-can"></i></a>-->
+                <a th:href="@{/students}" class="btn btn-warning"> Back </a>
             </div>
 
             <br/>
 
-            <!-- Table -->
-            <div th:object="${task}">
-                <table border="1" class="table table-striped table-responsive-md">
-                    <!-- Table rows -->
-                    <tbody>
-                    <tr>
-                        <td class="font-weight-bold"> Task </td>
-                        <td th:text="${task.name}"></td>
-                    </tr>
+            <!-- Task creation form -->
+            <div>
+                <form action="/" th:action="@{/save-lecturer-task}" th:object="${task}" encType="multipart/form-data" method="POST">
+                    <!-- Add name -->
+                    <a> Name </a>
+                    <input type="text" th:field="${task.name}"
+                           placeholder="Name" required class="form-control mb-4 col-4">
 
-                    <tr>
-                        <td class="font-weight-bold"> Description </td>
-                        <!-- Show description if it exists -->
-                        <td th:if="${task.description != ''}" th:text="${task.description}"></td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.description != ''}"> - </td>
-                    </tr>
+                    <!-- Add description -->
+                    <a> Description </a>
+                    <input type="text" th:field="${task.description}"
+                           placeholder="Description" class="form-control mb-4 col-4">
 
-                    <tr>
-                        <td class="font-weight-bold"> Deadline </td>
-                        <!-- Show deadline date if it exists -->
-                        <td th:if="${task.deadline != ''}" th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.deadline != ''}"> - </td>
-                    </tr>
+                    <!-- Add deadline date -->
+                    <a> Deadline </a>
+                    <input type="date" th:field="${task.deadline}"
+                           class="form-control mb-4 col-4">
 
-                    <tr>
-                        <td class="font-weight-bold"> Link </td>
-                        <!-- Show link button if it exists -->
-                        <td th:if="${task.linkURL != ''}">
-                            <a th:href="@{${task.linkURL}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.linkURL}"> Open </a>
+                    <!-- Add link -->
+                    <a> Link </a>
+                    <input type="url" th:field="${task.linkURL}"
+                           placeholder="https://www.example.com"
+                           size="100"
+                           class="form-control mb-4 col-4">
 
-                        </td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.linkURL != ''}"> - </td>
+                    <!-- Upload file -->
+                    <a> File </a>
+                    <br/>
+                    <input type="file" name="file" />
+                    <br/><br/>
 
-                    </tr>
+                    <!-- Select a bootcamp -->
+                    <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">
+                        <a> Bootcamp </a>
+                        <select type="number" th:field="${task.bootcamp.id}" class="dropdown form-control">
+                            <tr th:each="b : ${bootcamps}">
+                                <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>
 
-                    <tr>
-                        <td class="font-weight-bold"> File </td>
-                        <!-- Show download button if file exists -->
-                        <td th:if="${task.fileDB != null}">
-                            <a th:href="@{'/task/' + ${task.getId()} + '/file/' + ${task.getFileDB().getId()}}"
-                               class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.fileDB.name}"><i class="fa-solid fa-download"></i> Download </a>
-                        </td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.fileDB != null}"> - </td>
+                            </tr>
+                        </select>
+                    </div>
 
-                        <!--<td th:if="${task.getFileDB() == null}">
-                            &lt;!&ndash; Download file &ndash;&gt;
-                            <a th:text="'file not uploaded'"></a>
+                    <!-- Save button -->
+                    <div>
+                        <button type="submit" value="Upload" class="btn btn-info col-2"> Save </button>
+                    </div>
+                    <br>
 
-                        </td>-->
-                    </tr>
-                    </tbody>
-                </table>
+                </form>
             </div>
 
         </div>
     </div>
 </div>
+
 </body>
 </html>

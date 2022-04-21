@@ -4,6 +4,7 @@ import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
 import com.bootcamp.bootcampmanager.bootcamp.BootcampService;
 import com.bootcamp.bootcampmanager.lecturer.Lecturer;
 import com.bootcamp.bootcampmanager.lecturer.LecturerService;
+import com.bootcamp.bootcampmanager.task.FilterContainer;
 import com.bootcamp.bootcampmanager.task.Task;
 import com.bootcamp.bootcampmanager.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class StudentController {
     @GetMapping("/students")
     public String showAllStudents(Model model, Principal principal) {
 
+        FilterContainer filterContainer = new FilterContainer( -1);
+        filterContainer.unsetShow();
         List<Lecturer> allLecturers = lecturerService.getAllLecturers();
         for(Lecturer lecturer : allLecturers)
             if(lecturer.getEmail().equals(principal.getName())){
@@ -55,7 +58,6 @@ public class StudentController {
                 model.addAttribute("bootcampsList", lecturer.getJoinedBootcamp());
                 model.addAttribute("studentsList", studentsList);
                 model.addAttribute("thisLecturer", lecturer);
-
                 return "students";
             }
 
@@ -94,6 +96,7 @@ public class StudentController {
     public String showStudentFormForUpdate(@PathVariable(value = "id") long id, Model model) {
         Student student = studentService.getStudentById(id);
         model.addAttribute("student", student);
+        model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
         return "update-student";
     }
 
@@ -107,7 +110,7 @@ public class StudentController {
     public String showStudentInfo(@PathVariable(value = "id") long id, Model model) {
 
         model.addAttribute("student", studentService.getStudentById(id));
-        model.addAttribute("helper", new StudentHelper(studentService));
+//        model.addAttribute("helper", new StudentHelper(studentService));
         return "student";
     }
 }

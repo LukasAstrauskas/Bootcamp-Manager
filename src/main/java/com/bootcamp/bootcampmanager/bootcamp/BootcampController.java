@@ -56,20 +56,41 @@ public class BootcampController {
     }
 
     @GetMapping("/delete-bootcamp/{id}")
-    public String deleteBootcamp(@PathVariable(value = "id") long id) {
+    public String deleteBootcamp(@PathVariable("id") long id) {
         bootcampService.deleteBootcampById(id);
         return "redirect:/bootcamps";
     }
 
     @GetMapping("/bootcamp/{id}")
-    public String showBootcampLecturers(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("bootcamp",
-                bootcampService.getBootcampById(id));
+    public String showBootcampLecturers(@PathVariable("id") long id, Model model) {
+        Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
+        model.addAttribute("bootcamp", thisBootcamp);
+        boolean freeTasks = false;
+        boolean freeStudents = false;
+        boolean freeLecturers = false;
+        for (Task task : taskService.getAllTasks())
+            if (task.getBootcamp() == null) {
+                freeTasks = true;
+                break;
+            }
+        for (Student student : studentService.getAllStudents())
+            if (student.getBootcamp() == null) {
+                freeStudents = true;
+                break;
+            }
+        for (Lecturer lecturer : lecturerService.getAllLecturers())
+            if (!lecturer.getJoinedBootcamp().contains(thisBootcamp)) {
+                freeLecturers = true;
+                break;
+            }
+        model.addAttribute("freeTasks", freeTasks);
+        model.addAttribute("freeStudents", freeStudents);
+        model.addAttribute("freeLecturers", freeLecturers);
         return "bootcamp";
     }
 
-    @GetMapping(value = "/link-student/{id}")
-    public String showStudentCheckbox(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping("/link-student/{id}")
+    public String showStudentCheckbox(@PathVariable("id") long id, Model model) {
         model.addAttribute("students", studentService.getStudentsWithNoBootcamp());
         model.addAttribute("bootcamp", bootcampService.getBootcampById(id));
         return "link-student";
@@ -77,7 +98,7 @@ public class BootcampController {
 
     @PostMapping("/insert/{id}")
     public String insertStudent(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                                @PathVariable(value = "id") long id) {
+                                @PathVariable("id") long id) {
         Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
         for (Student student : bootcamp.getStudents()) {
             student.setBootcamp(thisBootcamp);
@@ -86,15 +107,15 @@ public class BootcampController {
         return "redirect:/bootcamp/" + id;
     }
 
-    @GetMapping(value = "/unlink-student/{id}")
-    public String unlinkStudent(@PathVariable(value = "id") long id,
+    @GetMapping("/unlink-student/{id}")
+    public String unlinkStudent(@PathVariable("id") long id,
                                 Model model) {
         Long campID = studentService.unlinkStudent(id);
         return "redirect:/bootcamp/" + campID;
     }
 
     @GetMapping("/enrolled-student/{id}")
-    public String enrolledStudent(@PathVariable(value = "id") long id,
+    public String enrolledStudent(@PathVariable("id") long id,
                                   Model model) {
         model.addAttribute("student", studentService.getStudentById(id));
         model.addAttribute("bootcamp", bootcampService.getAllBootcamps());
@@ -102,7 +123,7 @@ public class BootcampController {
     }
 
     @GetMapping("/link-lecturer/{id}")
-    public String showLecturerCheckbox(@PathVariable(value = "id") long id, Model model) {
+    public String showLecturerCheckbox(@PathVariable("id") long id, Model model) {
         model.addAttribute("lecturers", lecturerService.getAllLecturers());
         model.addAttribute("bootcamp", bootcampService.getBootcampById(id));
         return "link-lecturer";
@@ -110,7 +131,7 @@ public class BootcampController {
 
     @PostMapping("/insertLecturer/{id}")
     public String insertExample(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                                @PathVariable(value = "id") long id) {
+                                @PathVariable("id") long id) {
 
         Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
         for (Lecturer lecturer : bootcamp.getCampLecturers()) {
@@ -131,8 +152,8 @@ public class BootcampController {
     }
 
     @GetMapping("/unlink-lecturer/{id}/{ip}")
-    public String unlinkLecturer(@PathVariable(value = "id") long id,
-                                 @PathVariable(value = "ip") long ip) {
+    public String unlinkLecturer(@PathVariable("id") long id,
+                                 @PathVariable("ip") long ip) {
 
         Lecturer lecturer = lecturerService.getLecturerById(id);
         List<Bootcamp> bootcamps = lecturer.getJoinedBootcamp();
@@ -152,8 +173,8 @@ public class BootcampController {
         return "enrolled-lecturer";
     }
 
-    @GetMapping(value = "/link-task/{id}")
-    public String showTaskCheckbox(@PathVariable(value = "id") long id, Model model) {
+    @GetMapping("/link-task/{id}")
+    public String showTaskCheckbox(@PathVariable( "id") long id, Model model) {
         List<Task> tasks = new ArrayList<>();
         for (Task task : taskService.getAllTasks())
             if (task.getBootcamp() == null)
@@ -174,7 +195,7 @@ public class BootcampController {
         return "redirect:/bootcamp/" + id;
     }
 
-    @GetMapping(value = "/unlink-task/{id}")
+    @GetMapping("/unlink-task/{id}")
     public String unlinkTask(@PathVariable("id") long id) {
         Task task = taskService.getTaskById(id);
         long index = task.getBootcamp().getId();

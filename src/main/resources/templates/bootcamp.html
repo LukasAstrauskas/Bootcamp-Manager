@@ -44,7 +44,7 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu">
                                     <!-- redirect to logged-in user's user page-->
-                                    <a class="dropdown-item" href="/user">My profile</a>
+                                    <a class="dropdown-item" href="/profile">My profile</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -75,9 +75,9 @@
             <a th:href="@{/bootcamps}" class="btn btn-warning"> Back </a>
 
             <div class="btn-group">
-                <button id="active-l"  onclick="showLecturers()" type="button" class="btn btn-success active"> Lecturers </button>
-                <button id="active-s" onclick="showStudents()" type="button" class="btn btn-success"> Students </button>
-                <button id="active-t"  onclick="showTasks()" type="button" class="btn btn-success"> Tasks </button>
+                <button id="active-l"  onclick="showLecturers()" type="button" class="btn custom-tab custom-tab-active" > Lecturers </button>
+                <button id="active-s" onclick="showStudents()" type="button" class="btn custom-tab"> Students </button>
+                <button id="active-t"  onclick="showTasks()" type="button" class="btn custom-tab"> Tasks </button>
             </div>
             <br><br>
 
@@ -86,7 +86,8 @@
                     <h2>Lecturers</h2>
                 </div>
 
-                <a th:href="@{/link-lecturer/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add to bootcamp </a>
+                <a th:if="${freeLecturers}" th:href="@{/link-lecturer/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-link"></i> Assign to bootcamp </a>
+                <!--<a th:href="@{/new-user}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add lecturer </a>-->
                 <br><br>
 
                 <table border="1" class="table table-striped table-responsive-md">
@@ -110,7 +111,7 @@
                         <td>
                             <!-- Open user page button (hardcoded link - it opens not particular bootcamp's page for now) -->
                             <a th:href="@{/enrolled-lecturer/{id}/{ip}(id=${lecturer.id}, ip=${bootcamp.id})}" class="btn btn-warning">Open</a>
-                            <a th:href="@{/unlink-lecturer/{id}/{ip}(id=${lecturer.id}, ip=${bootcamp.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            <a th:href="@{/unlink-lecturer/{id}/{ip}(id=${lecturer.id}, ip=${bootcamp.id})}" class="btn btn-danger"><i class="fa-solid fa-link-slash"></i> Un-assign </a>
                         </td>
                     </tr>
                     </tbody>
@@ -122,7 +123,8 @@
                     <h2>Students</h2>
                 </div>
 
-                <a th:href="@{/link-student/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add to bootcamp </a>
+                <a th:if="${freeStudents}" th:href="@{/link-student/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-link"></i> Assign to bootcamp </a>
+                <!--<a th:href="@{/new-user}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add student </a>-->
                 <br><br>
 
                 <table border="1" class="table table-striped table-responsive-md">
@@ -148,7 +150,7 @@
                             <a th:href="@{/enrolled-student/{id}(id=${student.id})}" class="btn btn-warning">Open</a>
 <!--                                        &lt;!&ndash; Edit button &ndash;&gt;-->
 <!--                                        <a th:href="@{/update-user/{id}(id=${bootcamp.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>-->
-                            <a th:href="@{/unlink-student/{id}(id=${student.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            <a th:href="@{/unlink-student/{id}(id=${student.id})}" class="btn btn-danger"><i class="fa-solid fa-link-slash"></i> Un-assign </a>
                         </td>
                     </tr>
                     </tbody>
@@ -160,7 +162,8 @@
                     <h2>Tasks</h2>
                 </div>
 
-                <a th:href="@{/link-task/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add to bootcamp </a>
+                <a th:if="${freeTasks}" th:href="@{/link-task/{id}(id=${bootcamp.id})}" class="btn btn-success"><i class="fa-solid fa-link"></i> Assign to bootcamp </a>
+                <!--<a  th:href="@{/new-task}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add task </a>-->
                 <br><br>
 
                 <table border="1" class="table table-striped table-responsive-md">
@@ -168,9 +171,9 @@
                     <thead>
                     <tr>
                         <th> # </th>
-                        <th> Title </th>
+                        <th> Task </th>
                         <th> Description </th>
-                        <th> Deadline </th>
+<!--                        <th> Deadline </th>-->
                         <th> Actions </th>
                     </tr>
                     </thead>
@@ -180,11 +183,11 @@
                         <td th:text="${bootcamp.getTasks().indexOf(task)+1}"></td>
                         <td th:text="${task.getName()}"></td>
                         <td th:text="${task.getDescription()}"></td>
-                        <td th:text="${task.getDeadline().toGMTString()}"></td>
+<!--                        <td th:text="${task.getDeadline().toGMTString()}"></td>-->
                         <td>
                             <!-- Open user page button (hardcoded link - it opens not particular bootcamp's page for now) -->
                             <a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-warning">Open</a>
-                            <a th:href="@{/unlink-task/{id}(id=${task.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            <a th:href="@{/unlink-task/{id}(id=${task.id})}" class="btn btn-danger"><i class="fa-solid fa-link-slash"></i> Un-assign </a>
                         </td>
                     </tr>
                     </tbody>

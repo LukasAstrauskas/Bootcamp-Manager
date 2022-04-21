@@ -35,7 +35,7 @@
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/users">Users</a>
                             </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link" href="/tasks">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
@@ -68,19 +68,42 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" >
-                                <a class="nav-link" href="/students">Students</a>
-                            </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <!-- Need to redirect to this lecturer-tasks.html page -->
-                                <a class="nav-link" th:href="@{/lecturers/{id}(id=${thisLecturer.id})/tasks/{taskId}(taskId=${task.id})}">Tasks</a>
-                                <!--<a style="color: red!important;" class="nav-link">Tasks</a>-->
-                            </li>
+
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
                                     <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
                                     <a class="dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="navigation-wrap bg-light-student start-header start-style" sec:authorize="hasRole('STUDENT')">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <a class="navbar-brand navbar-logo" href="/student-homepage">Bootcamp Manager</a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto py-4 py-md-0">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <div class="dropdown-menu dropdown-menu-student">
+                                    <a class="dropdown-item dropdown-item-student" href="/profile">My profile</a>
+                                    <a class="dropdown-item dropdown-item-student" href="/logout">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -99,87 +122,59 @@
         <div class="container">
 
             <div>
-                <h2>Task</h2>
+                <!-- Add here actual user's firstName and lastName -->
+                <h2 th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h2>
             </div>
 
             <br/>
 
+            <!-- Back button -->
             <div>
-                <!-- Back button -->
-                <!-- Need to redirect to this lecturer-tasks.html page -->
-                <!--<a th:href = "@{/tasks}" class="btn btn-warning"> Back </a>-->
-                <a style="color: red!important;" class="btn btn-warning"> Back </a>
-
-                <!-- Mark as completed button -->
-                <!--<button type="button" class="btn btn-success"> Mark as completed </button>-->
-                <!--<form action="#" th:action="@{/save-task}" th:object="${task}" method="POST">
-                    <input type="checkbox" th:checked="${task.isCompleted() ? false : true}"/>
-                    <button type="submit" class="btn btn-info col-2"> Save </button>
-                </form>-->
-
-                <!-- Edit button for ADMIN and LECTURER-->
-                <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
-
-                <!-- Delete button for ADMIN and LECTURER -->
-                <!--<a th:href="@{/delete-task/{id}(id=${task.id})}" class="btn btn-danger" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-trash-can"></i></a>-->
+                <a th:href = "@{{homepage}(homepage = ${userContainer.getHomepage()})}" class="btn btn-warning" > Back to homepage </a>
+                <a th:href = "@{/change-profile-password/{id}/{l}(id = ${user.id}, l = ${role})}" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Change Password </a>
+                <!-- Edit user's data which was selected from previous page -->
+                <!-- Edit button -->
+<!--                <a th:href = "@{/update-user}" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Edit </a>-->
             </div>
 
             <br/>
 
             <!-- Table -->
-            <div th:object="${task}">
+            <div th:object="${user}">
                 <table border="1" class="table table-striped table-responsive-md">
                     <!-- Table rows -->
                     <tbody>
                     <tr>
-                        <td class="font-weight-bold"> Task </td>
-                        <td th:text="${task.name}"></td>
+                        <td class="font-weight-bold"> First name </td>
+                        <td th:text="${user.getFirstName()}">  </td>
                     </tr>
 
                     <tr>
-                        <td class="font-weight-bold"> Description </td>
-                        <!-- Show description if it exists -->
-                        <td th:if="${task.description != ''}" th:text="${task.description}"></td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.description != ''}"> - </td>
+                        <td class="font-weight-bold"> Last name </td>
+                        <td th:text="${user.getLastName()}">  </td>
                     </tr>
 
                     <tr>
-                        <td class="font-weight-bold"> Deadline </td>
-                        <!-- Show deadline date if it exists -->
-                        <td th:if="${task.deadline != ''}" th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.deadline != ''}"> - </td>
-                    </tr>
+                        <td class="font-weight-bold"> Email </td>
+                        <td th:text="${user.getEmail()}">  </td>
 
-                    <tr>
-                        <td class="font-weight-bold"> Link </td>
-                        <!-- Show link button if it exists -->
-                        <td th:if="${task.linkURL != ''}">
-                            <a th:href="@{${task.linkURL}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.linkURL}"> Open </a>
+<!--                    <tr>-->
+<!--                        <td> Group </td>-->
+<!--                        <td th:text="${user.getFirstName()}">  </td>-->
+<!--                    </tr>-->
 
-                        </td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.linkURL != ''}"> - </td>
+<!--                    <tr>-->
+<!--                        <td> Bootcamp </td>-->
+<!--                        <td th:text="${user.getFirstName()}">  </td>-->
+<!--                    </tr>-->
 
-                    </tr>
 
-                    <tr>
-                        <td class="font-weight-bold"> File </td>
-                        <!-- Show download button if file exists -->
-                        <td th:if="${task.fileDB != null}">
-                            <a th:href="@{'/task/' + ${task.getId()} + '/file/' + ${task.getFileDB().getId()}}"
-                               class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.fileDB.name}"><i class="fa-solid fa-download"></i> Download </a>
-                        </td>
-                        <!-- Show - if it does not exist -->
-                        <td th:unless="${task.fileDB != null}"> - </td>
-
-                        <!--<td th:if="${task.getFileDB() == null}">
-                            &lt;!&ndash; Download file &ndash;&gt;
-                            <a th:text="'file not uploaded'"></a>
-
-                        </td>-->
-                    </tr>
+<!--                    <tr>-->
+<!--                        <td> Project </td>-->
+<!--                        <td> Value </td>-->
+<!--                        &lt;!&ndash;<td th:text="${user.firstName}"></td>&ndash;&gt;-->
+<!--                        </td>-->
+<!--                    </tr>-->
                     </tbody>
                 </table>
             </div>

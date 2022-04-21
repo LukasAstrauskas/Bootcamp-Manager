@@ -8,5 +8,5 @@ public interface TaskService {
     void saveTask(Task task);
     Task getTaskById(Long id);
     void deleteTaskById(Long id);
-    /*public List<Task> getTasksByCourse(long courseId);*/
+
 }

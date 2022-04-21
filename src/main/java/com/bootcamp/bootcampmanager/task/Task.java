@@ -2,7 +2,7 @@ package com.bootcamp.bootcampmanager.task;
 
 import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
 import com.bootcamp.bootcampmanager.filedb.FileDB;
-import com.bootcamp.bootcampmanager.student.Student;
+import com.bootcamp.bootcampmanager.student.StudentTaskStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
@@ -39,8 +39,13 @@ public class Task {
     @JoinColumn(name = "file_id", referencedColumnName = "id")
     private FileDB fileDB;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<Student> students;
+//    @ManyToMany(mappedBy = "tasks")
+//    private List<Student> students;
+
+//    ManyToMany mapping using additional table "TaskStatus"
+
+    @OneToMany(mappedBy = "task")
+    Set<StudentTaskStatus> taskStatusList;
 
     @ManyToOne
     @JoinColumn(name = "bootcamp_id", referencedColumnName = "id")

@@ -19,4 +19,6 @@ public interface StudentService {
     List<Student> getStudentsWithNoBootcamp();
 
     Long unlinkStudent(long id);
+
+    Student getStudentByEmail(String email);
 }

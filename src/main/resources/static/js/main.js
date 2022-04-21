@@ -65,13 +65,13 @@ function showLecturers() {
 
     if (lecturersTable.style.display === "none") {
         lecturersTable.style.display = "block";
-        lecturersActive.classList.add('active');
+        lecturersActive.classList.add('custom-tab-active');
 
         studentsTable.style.display = "none";
-        studentsActive.classList.remove('active');
+        studentsActive.classList.remove('custom-tab-active');
 
         tasksTable.style.display = "none";
-        tasksActive.classList.remove('active');
+        tasksActive.classList.remove('custom-tab-active');
     }
 }
 
@@ -86,13 +86,13 @@ function showStudents() {
 
     if (studentsTable.style.display === "none") {
         studentsTable.style.display = "block";
-        studentsActive.classList.add('active');
+        studentsActive.classList.add('custom-tab-active');
 
         lecturersTable.style.display = "none";
-        lecturersActive.classList.remove('active');
+        lecturersActive.classList.remove('custom-tab-active');
 
         tasksTable.style.display = "none";
-        tasksActive.classList.remove('active');
+        tasksActive.classList.remove('custom-tab-active');
     }
 }
 
@@ -107,13 +107,48 @@ function showTasks() {
 
     if (tasksTable.style.display === "none") {
         tasksTable.style.display = "block";
-        tasksActive.classList.add('active');
+        tasksActive.classList.add('custom-tab-active');
 
         studentsTable.style.display = "none";
-        studentsActive.classList.remove('active');
+        studentsActive.classList.remove('custom-tab-active');
 
         lecturersTable.style.display = "none";
-        lecturersActive.classList.remove('active');
+        lecturersActive.classList.remove('custom-tab-active');
     }
 }
 
+/* students page */
+function showLecturerBootcamps() {
+    var bootcampsTable = document.getElementById("bootcamps");
+    var bootcampsActive = document.getElementById("active-b");
+    var studentsTable = document.getElementById("students");
+    var studentsActive = document.getElementById("active-s");
+
+    if (bootcampsTable.style.display === "none") {
+        bootcampsTable.style.display = "block";
+        bootcampsActive.classList.add('custom-tab-active');
+
+        studentsTable.style.display = "none";
+        studentsActive.classList.remove('custom-tab-active');
+    }
+}
+
+/* students page */
+function showLecturerBootcampStudents() {
+    var bootcampsTable = document.getElementById("bootcamps");
+    var bootcampsActive = document.getElementById("active-b");
+    var studentsTable = document.getElementById("students");
+    var studentsActive = document.getElementById("active-s");
+
+    if (studentsTable.style.display === "none") {
+        studentsTable.style.display = "block";
+        studentsActive.classList.add('custom-tab-active');
+
+        bootcampsTable.style.display = "none";
+        bootcampsActive.classList.remove('custom-tab-active');
+    }
+}
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})

@@ -76,5 +76,10 @@ public class StudentServiceImp implements StudentService {
         }
         return "";
     }
+
+    public Student getStudentByEmail(String email) {
+        Optional<Student> studentByEmail = studentRepository.findStudentByEmail(email);
+        return studentByEmail.get();
+    }
 }
 

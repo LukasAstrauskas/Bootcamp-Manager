@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
@@ -23,7 +30,9 @@
 
                     <a class="navbar-brand navbar-logo" href="/student-homepage">Bootcamp Manager</a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -31,10 +40,12 @@
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
 
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-student">
                                     <!-- redirect to logged-in user's user page-->
-                                    <a class="dropdown-item dropdown-item-student" href="/user">My profile</a>
+                                    <a class="dropdown-item dropdown-item-student" href="/profile">My profile</a>
                                     <a class="dropdown-item dropdown-item-student" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -61,69 +72,58 @@
 
             <div>
                 <!-- Back button -->
-                <a th:href = "@{/student-homepage}" class="btn btn-warning"> Back </a>
-
-                <!-- Mark as completed button -->
-                <!--<button type="button" class="btn btn-success"> Mark as completed </button>-->
-                <!--<form action="#" th:action="@{/save-task}" th:object="${task}" method="POST">
-                    <input type="checkbox" th:checked="${task.isCompleted() ? false : true}"/>
-                    <button type="submit" class="btn btn-info col-2"> Save </button>
-                </form>-->
-
-                <!-- Edit button for ADMIN and LECTURER-->
-                <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
-
-                <!-- Delete button for ADMIN and LECTURER -->
-                <!--<a th:href="@{/delete-task/{id}(id=${task.id})}" class="btn btn-danger" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-trash-can"></i></a>-->
+                <a th:href="@{/student-homepage}" class="btn btn-warning"> Back </a>
             </div>
 
             <br/>
 
             <!-- Table -->
-            <div th:object="${task}">
+            <div>
                 <table border="1" class="table table-striped table-responsive-md">
-                    <!-- Table rows -->
+                    <!--                     Table rows-->
                     <tbody>
-                        <tr>
-                            <td> Task </td>
-                            <td th:text="${task.name}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Task</td>
+                        <td th:text="${task.name}"></td>
+                    </tr>
 
-                        <tr>
-                            <td> Description </td>
-                            <td th:text="${task.description}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Description</td>
+                        <td th:text="${task.description}"></td>
+                    </tr>
 
-                        <tr>
-                            <td> Deadline </td>
-                            <td th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Deadline</td>
+                        <td th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
+                    </tr>
 
-                        <tr>
-                            <td> Status </td>
-                            <td th:text="${helper.isTaskCompleted(task.getId(), thisStudent.getId())}"></td>
-                        </tr>
 
-                        <tr>
-                            <td th:text="${link + task.getLinkURL()}"></td>
-                            <td>
-                                <!-- Open link button -->
-                                <a th:href="@{${task.getLinkURL()}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"> Open </a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <!-- Show link button if it exists -->
+                        <td class="font-weight-bold"> Link</td>
+                        <td>
+                            <a th:href="@{${task.linkURL}}" target="_blank" rel="noopener noreferrer"
+                               class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                               th:title="${task.linkURL}"> Open </a>
+                        </td>
+                    </tr>
+<!---->
+                    <tr>
+<!--                        No option if no file are present-->
+                        <td class="font-weight-bold"> File</td>
+                        <td>
+                            <!-- Download file -->
+<!--                            <a th:href="@{/task/{taskId}/file/{fileId}(taskId=${task.id},fileId=${task.fileDB.id})}">-->
+                                <!-- class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.fileDB.name}">-->
+<!--                                <i class="fa-solid fa-download"></i> Download </a>-->
 
-                        <tr>
-                            <td> File </td>
-                            <td>
-                                <!-- File download button (if !null - show button) -->
-                                <!--<a th:if="${task.fileDB.data != null}" th:href="@{'/task/' + ${task.getId()} + '/file/' + ${task.getFileDB().getId()}}"
-                                   class="btn btn-warning"><i class="fa-solid fa-download"></i> Download </a>-->
+                        <a  th:href="@{/task/{taskId}/file/{fileId}(taskId=${task.id},fileId=${0})}"
+                           class="btn btn-warning"><i class="fa-solid fa-download"></i> Download </a>
 
-                                <!-- Download file -->
-                                <a th:href="@{'/task/' + ${task.getId()} + '/file/' + ${task.getFileDB().getId()}}"
-                                   class="btn btn-warning"><i class="fa-solid fa-download"></i> Download </a>
-                            </td>
-                        </tr>
+
+
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

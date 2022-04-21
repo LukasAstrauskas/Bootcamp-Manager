@@ -41,7 +41,7 @@
                                 <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="/user">My profile</a>
+                                        <a class="dropdown-item" href="/profile">My profile</a>
                                         <a class="dropdown-item" href="/logout">Logout</a>
                                     </div>
                                 </li>
@@ -89,44 +89,44 @@
                         </thead>
                         <!-- Table rows -->
                         <tbody>
-                        <tr th:each="admin : ${adminsList}">
-                            <td th:text="${counter.getIndex()}"></td>
+                        <tr th:each="admin, aStat : ${adminsList}">
+                            <td th:text="${aStat.count}"></td>
                             <td th:text="${admin.getFirstName()}"></td>
                             <td th:text="${admin.getLastName()}"></td>
                             <td th:text="${admin.getEmail()}"></td>
                             <td th:text="${admin.userRole()}"></td>
                             <td>
                                 <!-- Open user page button (hardcoded link - it opens not particular user's page for now) -->
-                                <a th:href="@{/user}" class="btn btn-warning">Open</a>
+                                <a th:href="@{/user/{id}/{l}(id = ${admin.id}, l = 1)}" class="btn btn-warning"> Open </a>
                                 <!-- Edit button -->
                                 <a th:href="@{/update-user/{id}(id=${admin.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                 <!-- Delete button -->
                                 <a th:href="@{/delete-user/{id}(id=${admin.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
-                        <tr th:each="lecturer : ${lecturersList}">
-                            <td th:text="${counter.getIndex()}"></td>
+                        <tr th:each="lecturer, lStat : ${lecturersList}">
+                            <td th:text="${lStat.count}"></td>
                             <td th:text="${lecturer.getFirstName()}"></td>
                             <td th:text="${lecturer.getLastName()}"></td>
                             <td th:text="${lecturer.getEmail()}"></td>
                             <td th:text="${lecturer.userRole()}"></td>
                             <td>
                                 <!-- Open user page button (hardcoded link - it opens not particular user's page for now) -->
-                                <a th:href="@{/user}" class="btn btn-warning">Open</a>
+                                <a th:href="@{/user/{id}/{l}(id = ${lecturer.id}, l = 2)}" class="btn btn-warning"> Open </a>
                                 <!-- Edit button -->
                                 <a th:href="@{/update-user/{id}(id=${lecturer.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                 <!-- Delete button -->
                                 <a th:if="${lecturer.joinedBootcamp.isEmpty()}" th:href="@{/delete-user/{id}(id=${lecturer.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
                         </tr>
-                        <tr th:each="student : ${studentsList}">
-                            <td th:text="${counter.getIndex()}"></td>
+                        <tr th:each="student, sStat : ${studentsList}">
+                            <td th:text="${sStat.count}"></td>
                             <td th:text="${student.getFirstName()}"></td>
                             <td th:text="${student.getLastName()}"></td>
                             <td th:text="${student.getEmail()}"></td>
                             <td th:text="${student.userRole()}"></td>
                             <td>
                                 <!-- Open user page button (hardcoded link - it opens not particular user's page for now) -->
-                                <a th:href="@{/user}" class="btn btn-warning">Open</a>
+                                <a th:href="@{/user/{id}/{l}(id = ${student.id}, l = 3)}" class="btn btn-warning"> Open </a>
                                 <!-- Edit button -->
                                 <a th:href="@{/update-user/{id}(id=${student.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
                                 <!-- Delete button -->

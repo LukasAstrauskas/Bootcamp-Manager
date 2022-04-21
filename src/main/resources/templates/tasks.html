@@ -42,7 +42,7 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu">
                                     <!-- redirect to logged-in user's user page-->
-                                    <a class="dropdown-item" href="/user">My profile</a>
+                                    <a class="dropdown-item" href="/profile">My profile</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
                                 </div>
                             </li>
@@ -94,9 +94,8 @@
                     <tr>
                         <th> # </th>
                         <th> Task </th>
-                        <th> Bootcamp </th>
-                        <th> Description </th>
                         <th> Deadline </th>
+                        <th> Bootcamp </th>
                         <th> Actions </th>
                     </tr>
                     </thead>
@@ -105,17 +104,17 @@
                     <tr th:each="task : ${tasksList}">
                         <td th:text="${tasksList.indexOf(task)+1}"></td>
                         <td th:text="${task.name}"></td>
-                        <td th:if="${task.getBootcamp() != null}" th:text="${task.getBootcamp().getName()}"></td>
-                        <td th:if="${task.getBootcamp() == null}" th:text="'not assigned'"></td>
-                        <td th:text="${task.description}"></td>
-                        <td th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
+                        <td th:if="${task.deadline != null}" th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
+                        <td th:unless="${task.deadline != null}"> - </td>
+                        <td th:if="${task.bootcamp != null}" th:text="${task.bootcamp.name}"></td>
+                        <td th:unless="${task.bootcamp != null}"> - </td>
                         <td>
                             <!-- Open selected task's page button -->
                             <a th:href="@{/task/{id}(id=${task.id})}" class="btn btn-warning">Open</a>
                             <!-- Edit button -->
                             <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
                             <!-- Delete button -->
-                            <a th:if="${task.getBootcamp() == null}" th:href="@{/delete-task/{id}(id=${task.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            <a th:if="${task.bootcamp == null}" th:href="@{/delete-task/{id}(id=${task.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>
                     </tbody>

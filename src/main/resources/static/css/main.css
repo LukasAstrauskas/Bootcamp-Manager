@@ -630,3 +630,21 @@ body.dark .logo img {
 .show>.btn-success.dropdown-toggle:focus {
     box-shadow: 0 0 0 0.2rem rgb(40 167 69 / 0%)!important;
 }
+
+.custom-tab {
+    background-color: #4c91c6;
+    color: #fff;
+}
+
+.custom-tab:hover, .custom-tab:focus {
+    background-color: #2B74AC;
+}
+
+.custom-tab-active {
+    background-color: #2B74AC;
+}
+
+.custom-tab:not(:disabled):not(.disabled).custom-tab-active:focus, .custom-tab:not(:disabled):not(.disabled):active:focus,
+.show>.custom-tab.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgb(40 167 69 / 0%)!important;
+}
