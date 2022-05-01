@@ -5,7 +5,6 @@ import com.bootcamp.bootcampmanager.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,8 +22,10 @@ public class Admin extends User {
             inverseJoinColumns = @JoinColumn(name = "bootcamp_id"))
     List<Bootcamp> managingBootcamp;
 
-    public Admin(String firstName, String lastName, String email) {
+    public Admin(String firstName, String lastName, String email, String password) {
         super(firstName, lastName, email);
+        setPassword(password);
         setRoles("ROLE_ADMIN");
     }
+
 }

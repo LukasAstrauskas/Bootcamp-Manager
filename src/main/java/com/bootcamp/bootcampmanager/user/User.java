@@ -41,4 +41,13 @@ public class User {
         this.email = email;
         this.enabled = true;
     }
+
+    public User(String firstName, String lastName, String email, String password, String roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.enabled = true;
+        this.roles = roles;
+    }
 }

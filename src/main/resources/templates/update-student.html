@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
@@ -23,7 +30,9 @@
 
                     <a class="navbar-brand navbar-logo" href="/students">Bootcamp Manager</a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -38,7 +47,9 @@
                                 &lt;!&ndash;<a style="color: red!important;" class="nav-link">Tasks</a>&ndash;&gt;
                             </li>-->
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
                                     <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
                                     <a class=" dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
@@ -76,7 +87,7 @@
 
             <!-- Student update form -->
             <div>
-                <form action="#" th:action="@{/save-student}" th:object="${student}" method="POST">
+                <form action="#" th:action="@{/update-student}" th:object="${student}" method="POST">
                     <input type="hidden" th:field="*{id}"/>
 
                     <a> First name </a>
@@ -86,23 +97,27 @@
                     <input type="text" th:field="*{lastName}" required class="form-control mb-4 col-4">
 
                     <a> Email </a>
-                    <input type="email" th:field="*{email}" required class="form-control mb-4 col-4">
+                    <input type="email" th:field="*{email}" required th:readonly="false"
+                           class="form-control mb-4 col-4">
 
-                    <!--<a> Bootcamp id </a>
-                    <input type="text" th:field="${student.bootcamp.id}" required class="form-control mb-4 col-4">-->
+<!--                    <a>Roles</a>-->
+<!--                    <input type="text" th:field="*{roles}" required th:readonly="true" class="form-control mb-4 col-4">-->
+
+<!--                    <a> Bootcamp </a>-->
+<!--                    <input type="text" th:field="*{bootcamp.name}"  required th:readonly="true" class="form-control mb-4 col-4">-->
 
                     <!-- Select a bootcamp -->
-                    <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">
-                        <a> Bootcamp </a>
-                        <select type="number" th:field="${student.bootcamp.id}" class="dropdown form-control">
-                            <tr th:each="b : ${bootcamps}">
-                                <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>
+<!--                    <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">-->
+<!--                        <a> Bootcamp </a>-->
+<!--                        <select type="number" th:field="${student.bootcamp.id}" class="dropdown form-control">-->
+<!--                            <tr th:each="b : ${bootcamps}">-->
+<!--                                <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>-->
 
-                            </tr>
-                        </select>
-                    </div>
+<!--                            </tr>-->
+<!--                        </select>-->
+<!--                    </div>-->
 
-                    <button type="submit" class="btn btn-info col-2"> Update </button>
+                    <button type="submit" class="btn btn-info col-2"> Update</button>
                 </form>
             </div>
 

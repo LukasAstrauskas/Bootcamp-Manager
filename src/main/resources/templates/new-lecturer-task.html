@@ -71,11 +71,9 @@
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4" >
                                 <a class="nav-link" href="/students">Students</a>
                             </li>
-                            <!--<li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                &lt;!&ndash; Need to redirect to this lecturer-tasks.html page &ndash;&gt;
-                                <a class="nav-link" th:href="@{/lecturer-tasks/{id}(id=${thisLecturer.id})}">Tasks</a>
-                                <a style="color: red!important;" class="nav-link">Tasks</a>
-                            </li>-->
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" th:href="@{/lecturer-tasks}">Tasks</a>
+                            </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-lecturer">
@@ -109,7 +107,7 @@
                 <!-- Back button -->
                 <!-- Need to redirect to this lecturer-tasks.html page -->
                 <!--<a th:href = "@{/tasks}" class="btn btn-warning"> Back </a>-->
-                <a th:href="@{/students}" class="btn btn-warning"> Back </a>
+                <a th:href="@{/lecturer-tasks}" class="btn btn-warning"> Back </a>
             </div>
 
             <br/>
@@ -146,12 +144,11 @@
                     <br/><br/>
 
                     <!-- Select a bootcamp -->
-                    <div th:if="${bootcamps.size() > 0}" style="width: max-content; padding-bottom: 24px">
+                    <div  style="width: max-content; padding-bottom: 24px">
                         <a> Bootcamp </a>
                         <select type="number" th:field="${task.bootcamp.id}" class="dropdown form-control">
                             <tr th:each="b : ${bootcamps}">
-                                <option th:value="${b.id}"><a th:text="${b.getName()}"></a></option>
-
+                                <option th:value="${b.id}"><a th:text="${b.name}"></a></option>
                             </tr>
                         </select>
                     </div>

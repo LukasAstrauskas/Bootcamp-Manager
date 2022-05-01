@@ -1,6 +1,5 @@
 package com.bootcamp.bootcampmanager.admin;
 
-import com.bootcamp.bootcampmanager.lecturer.Lecturer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +7,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminServiceImp implements AdminService{
+public class AdminServiceImp implements AdminService {
+
+    private final AdminRepository adminRepository;
 
     @Autowired
-    private AdminRepository adminRepository;
+    public AdminServiceImp(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
+    }
 
 
     @Override
@@ -21,7 +24,7 @@ public class AdminServiceImp implements AdminService{
 
     @Override
     public void saveAdmin(Admin admin) {
-        this.adminRepository.save(admin);
+        adminRepository.save(admin);
     }
 
     @Override
@@ -38,6 +41,6 @@ public class AdminServiceImp implements AdminService{
 
     @Override
     public void deleteAdminById(long id) {
-        this.adminRepository.deleteById(id);
+        adminRepository.deleteById(id);
     }
 }

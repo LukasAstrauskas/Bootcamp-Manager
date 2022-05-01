@@ -63,7 +63,7 @@
 
             <div>
                 <!-- Add here actual user's firstName and lastName -->
-                <h2 th:text="${user.getFirstName() + ' ' + user.getLastName()}"></h2>
+                <h2 th:text="${user.firstName + ' ' + user.lastName}"></h2>
             </div>
 
             <br/>
@@ -71,7 +71,7 @@
             <!-- Back button -->
             <div>
                 <a th:href = "@{/users}" class="btn btn-warning" > Back </a>
-                <a th:href = "@{/change-password/{id}/{l}(id = ${user.id}, l = ${role})}" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Change Password </a>
+                <a th:href = "@{/change-password/{id}(id = ${user.id})}" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Change Password </a>
                 <!-- Edit user's data which was selected from previous page -->
                 <!-- Edit button -->
 <!--                <a th:href = "@{/update-user}" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Edit </a>-->
@@ -86,21 +86,21 @@
                     <tbody>
                     <tr>
                         <td class="font-weight-bold"> Role </td>
-                        <td th:text="${role}">  </td>
+                        <td th:text="${user.roles}">  </td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold"> First name </td>
-                        <td th:text="${user.getFirstName()}">  </td>
+                        <td th:text="${user.firstName}">  </td>
                     </tr>
 
                     <tr>
                         <td class="font-weight-bold"> Last name </td>
-                        <td th:text="${user.getLastName()}">  </td>
+                        <td th:text="${user.lastName}">  </td>
                     </tr>
 
                     <tr>
                         <td class="font-weight-bold"> Email </td>
-                        <td th:text="${user.getEmail()}">  </td>
+                        <td th:text="${user.email}">  </td>
 
 <!--                    <tr>-->
 <!--                        <td> Group </td>-->

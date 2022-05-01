@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class LecturerController {
 
+    private final LecturerService lecturerService;
+
     @Autowired
-    private LecturerService lecturerService;
+    public LecturerController(LecturerService lecturerService) {
+        this.lecturerService = lecturerService;
+    }
 }

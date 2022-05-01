@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
@@ -23,7 +30,9 @@
 
                     <a class="navbar-brand navbar-logo" href="/student-homepage">Bootcamp Manager</a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -31,7 +40,9 @@
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
 
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu dropdown-menu-student">
                                     <!-- redirect to logged-in user's user page-->
                                     <a class="dropdown-item dropdown-item-student" href="/profile">My profile</a>
@@ -65,11 +76,11 @@
                     <!-- Table header -->
                     <thead>
                     <tr>
-                        <th> # </th>
-                        <th> Task </th>
-                        <th> Deadline </th>
-                        <th> Status </th>
-                        <th> Actions </th>
+                        <th> #</th>
+                        <th> Task</th>
+                        <th> Deadline</th>
+                        <th> Status</th>
+                        <th> Actions</th>
                     </tr>
                     </thead>
                     <!-- Table rows -->
@@ -78,13 +89,14 @@
                         <td th:text="${tStat.count}"></td>
                         <td th:text="${taskStatus.task.name}"></td>
                         <td th:text="${#dates.format(taskStatus.task.deadline, 'yyyy-MM-dd')}"></td>
-                        <td th:text="${taskStatus.status} ? 'Completed' : 'Undone'"></td>
-<!--                        <td th:text="${helper.isTaskCompleted(task.id, student.id)}"></td>-->
+                        <td th:text="${taskStatus.status} ? 'Completed' : 'In progress'"></td>
                         <td>
                             <!-- Open selected task's page button -->
-                            <a th:href="@{/student-task/{taskId}(taskId=${taskStatus.task.id})}" class="btn btn-warning"> Open </a>
-                            <a th:href="@{/changeStatus/{id}(id=${taskStatus.id})}" class="btn btn-success"><i class="fa-solid fa-check"></i> Change </a>
-<!--                            <a th:href="@{/unset-task-completed/{taskId}/{studentId}(taskId=${task.id}, studentId=${student.id})}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Unmark </a>-->
+                            <a th:href="@{/student-task/{taskId}(taskId=${taskStatus.task.id})}"
+                               class="btn btn-warning"> Open </a>
+                            <a th:href="@{/changeStatus/{id}(id=${taskStatus.id})}"
+                               class="btn btn-success"><i class="fa-solid fa-check"></i> Change Status </a>
+                            <!--                            <a th:href="@{/unset-task-completed/{taskId}/{studentId}(taskId=${task.id}, studentId=${student.id})}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Unmark </a>-->
                             <!-- Edit button -->
                             <!--<a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN', 'LECTURER')"><i class="fa-solid fa-pencil"></i></a>-->
                             <!-- Delete button -->

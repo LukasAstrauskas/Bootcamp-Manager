@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
@@ -24,7 +31,9 @@
                     <!--<a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>-->
                     <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -40,7 +49,9 @@
                                 <a class="nav-link" href="/tasks">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu">
                                     <!-- redirect to logged-in user's user page-->
                                     <a class="dropdown-item" href="/profile">My profile</a>
@@ -64,14 +75,14 @@
 
             <div>
                 <!-- Add here actual lecturer's firstName and lastName -->
-                <h2> Lecturer "<a th:text="${lecturer.firstName}"></a>" </h2>
+                <h2> Lecturer "<a th:text="${lecturer.firstName+' '+lecturer.lastName}"></a>" </h2>
             </div>
 
             <br/>
 
             <div>
                 <!-- Back button -->
-                <a th:href = "@{/bootcamp/{id}(id=${bootcamp.getId()})}" class="btn btn-warning"> Back </a>
+                <a th:href="@{/bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-warning"> Back </a>
                 <!-- Edit student's data which was selected from previous page -->
                 <!-- Edit button -->
 
@@ -84,25 +95,25 @@
                 <table border="1" class="table table-striped table-responsive-md">
                     <!-- Table rows -->
                     <tbody>
-                        <tr>
-                            <td class="font-weight-bold"> First name </td>
-                            <td th:text="${lecturer.getFirstName()}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> First name</td>
+                        <td th:text="${lecturer.firstName}"></td>
+                    </tr>
 
-                        <tr>
-                            <td class="font-weight-bold"> Last name </td>
-                            <td th:text="${lecturer.getLastName()}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Last name</td>
+                        <td th:text="${lecturer.lastName}"></td>
+                    </tr>
 
-                        <tr>
-                            <td class="font-weight-bold"> Email </td>
-                            <td th:text="${lecturer.getEmail()}"></td>
+                    <tr>
+                        <td class="font-weight-bold"> Email</td>
+                        <td th:text="${lecturer.email}"></td>
 
 
-                        <tr>
-                            <td class="font-weight-bold"> Bootcamp </td>
-                            <td th:text="${bootcamp.getName()}"></td>
-                        </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Bootcamp</td>
+                        <td th:text="${bootcamp.name}"></td>
+                    </tr>
 
                     </tbody>
                 </table>

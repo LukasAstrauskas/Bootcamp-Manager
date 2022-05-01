@@ -6,22 +6,27 @@ import org.springframework.stereotype.Service;
 
 public class DataContainer {
 
-    String newPassword;
-    Long id;
-    String role;
+    private String password;
+    private Long id;
 
-    public DataContainer(String newPassword, Long id, String role) {
-        this.newPassword = newPassword;
+    public DataContainer() {
+    }
+
+    public DataContainer(Long id) {
         this.id = id;
-        this.role = role;
     }
 
-    public String getNewPassword() {
-        return newPassword;
+    public DataContainer(String password, Long id) {
+        this.password = password;
+        this.id = id;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -30,13 +35,5 @@ public class DataContainer {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }

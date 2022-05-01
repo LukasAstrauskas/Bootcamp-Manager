@@ -23,7 +23,7 @@ class UserRepositoryTest {
         String email = "snow@wall";
         String name = "Jon";
         String surname = "Snow";
-        Admin admin = new Admin(name, surname, email);
+        Admin admin = new Admin(name, surname, email, "pass");
         Admin save = repository.save(admin);
 //        when
         String firstName = save.getFirstName();

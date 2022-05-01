@@ -4,15 +4,17 @@ import com.bootcamp.bootcampmanager.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PasswordGeneratorServiceImpl implements PasswordGeneratorService{
+public class PasswordGeneratorServiceImpl implements PasswordGeneratorService {
 
-    public void generateRandomPassword(User user) {
+    public String generateRandomPassword() {
         PasswordGenerator passwordGenerator = new PasswordGenerator.PasswordGeneratorBuilder()
                 .useDigits(true)
                 .useLower(true)
                 .useUpper(true)
                 .build();
-        String password = passwordGenerator.generate(8);
-        user.setPassword(password);
+        return passwordGenerator.generate(8);
+    }
+    public String generateRandomPassword(String email) {
+        return email.split("@")[0];
     }
 }

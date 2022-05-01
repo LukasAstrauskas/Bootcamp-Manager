@@ -1,18 +1,16 @@
 package com.bootcamp.bootcampmanager.bootcamp;
 
-import com.bootcamp.bootcampmanager.lecturer.Lecturer;
+
 import com.bootcamp.bootcampmanager.lecturer.LecturerService;
-import com.bootcamp.bootcampmanager.student.Student;
 import com.bootcamp.bootcampmanager.student.StudentService;
-import com.bootcamp.bootcampmanager.task.Task;
 import com.bootcamp.bootcampmanager.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller()
 public class BootcampController {
@@ -23,7 +21,8 @@ public class BootcampController {
     private final TaskService taskService;
 
     @Autowired
-    public BootcampController(BootcampService bootcampService, StudentService studentService, LecturerService lecturerService, TaskService taskService) {
+    public BootcampController(BootcampService bootcampService, StudentService studentService,
+                              LecturerService lecturerService, TaskService taskService) {
         this.bootcampService = bootcampService;
         this.studentService = studentService;
         this.lecturerService = lecturerService;
@@ -62,145 +61,90 @@ public class BootcampController {
     }
 
     @GetMapping("/bootcamp/{id}")
-    public String showBootcampLecturers(@PathVariable("id") long id, Model model) {
-        Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
-        model.addAttribute("bootcamp", thisBootcamp);
-        boolean freeTasks = false;
-        boolean freeStudents = false;
-        boolean freeLecturers = false;
-        for (Task task : taskService.getAllTasks())
-            if (task.getBootcamp() == null) {
-                freeTasks = true;
-                break;
-            }
-        for (Student student : studentService.getAllStudents())
-            if (student.getBootcamp() == null) {
-                freeStudents = true;
-                break;
-            }
-        for (Lecturer lecturer : lecturerService.getAllLecturers())
-            if (!lecturer.getJoinedBootcamp().contains(thisBootcamp)) {
-                freeLecturers = true;
-                break;
-            }
-        model.addAttribute("freeTasks", freeTasks);
-        model.addAttribute("freeStudents", freeStudents);
-        model.addAttribute("freeLecturers", freeLecturers);
+    public String showBootcampLecturers(@PathVariable("id") long campID, Model model) {
+        model.addAttribute("bootcamp", bootcampService.getBootcampById(campID));
+        model.addAttribute("freeTasks", taskService.getTasksWithNoBootCamp());
+        model.addAttribute("freeStudents", studentService.getStudentsWithNoBootcamp());
+        model.addAttribute("lecturers", lecturerService.getLecturersNotInCamp(campID));
         return "bootcamp";
     }
 
-    @GetMapping("/link-student/{id}")
-    public String showStudentCheckbox(@PathVariable("id") long id, Model model) {
+    @GetMapping("/link-students-form/{campID}")
+    public String linkStudentsForm(@PathVariable long campID, Model model) {
         model.addAttribute("students", studentService.getStudentsWithNoBootcamp());
-        model.addAttribute("bootcamp", bootcampService.getBootcampById(id));
+        model.addAttribute("bootcamp", bootcampService.getBootcampById(campID));
         return "link-student";
     }
 
-    @PostMapping("/insert/{id}")
-    public String insertStudent(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                                @PathVariable("id") long id) {
-        Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
-        for (Student student : bootcamp.getStudents()) {
-            student.setBootcamp(thisBootcamp);
-            studentService.saveStudent(student);
-        }
-        return "redirect:/bootcamp/" + id;
+    @GetMapping("/link-student/{campID}/{studID}")
+    public String linkStudent(@PathVariable long campID, @PathVariable long studID) {
+        studentService.linkStudentToBootcamp(campID, studID);
+        return "redirect:/link-students-form/" + campID;
     }
 
     @GetMapping("/unlink-student/{id}")
-    public String unlinkStudent(@PathVariable("id") long id,
+    public String unlinkStudent(@PathVariable("id") long studID,
                                 Model model) {
-        Long campID = studentService.unlinkStudent(id);
+        Long campID = studentService.unlinkStudent(studID);
         return "redirect:/bootcamp/" + campID;
     }
 
     @GetMapping("/enrolled-student/{id}")
-    public String enrolledStudent(@PathVariable("id") long id,
+    public String enrolledStudent(@PathVariable("id") long studID,
                                   Model model) {
-        model.addAttribute("student", studentService.getStudentById(id));
+        model.addAttribute("student", studentService.getStudentById(studID));
         model.addAttribute("bootcamp", bootcampService.getAllBootcamps());
         return "enrolled-student";
     }
 
-    @GetMapping("/link-lecturer/{id}")
-    public String showLecturerCheckbox(@PathVariable("id") long id, Model model) {
-        model.addAttribute("lecturers", lecturerService.getAllLecturers());
-        model.addAttribute("bootcamp", bootcampService.getBootcampById(id));
+    @GetMapping("/link-lecturers-form/{campID}")
+    public String linkLecturersForm(@PathVariable long campID, Model model) {
+        model.addAttribute("lecturers", lecturerService.getLecturersNotInCamp(campID));
+        model.addAttribute("bootcamp", bootcampService.getBootcampById(campID));
         return "link-lecturer";
     }
 
-    @PostMapping("/insertLecturer/{id}")
-    public String insertExample(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                                @PathVariable("id") long id) {
-
-        Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
-        for (Lecturer lecturer : bootcamp.getCampLecturers()) {
-            List<Bootcamp> joinedBootcamps = lecturer.getJoinedBootcamp();
-            if (!joinedBootcamps.contains(thisBootcamp)) {
-                joinedBootcamps.add(thisBootcamp);
-                lecturer.setJoinedBootcamp(joinedBootcamps);
-                lecturerService.saveLecturer(lecturer);
-            }
-            List<Lecturer> addedLecturers = thisBootcamp.getCampLecturers();
-            if (!addedLecturers.contains(thisBootcamp)) {
-                addedLecturers.add(lecturer);
-                thisBootcamp.setCampLecturers(addedLecturers);
-                bootcampService.saveBootcamp(thisBootcamp);
-            }
-        }
-        return "redirect:/bootcamp/" + id;
+    @GetMapping("/link-lecturer/{campID}/{lecID}")
+    public String linkLecturer(@PathVariable long campID, @PathVariable long lecID) {
+        lecturerService.linkLecturerToBootcamp(campID, lecID);
+        return "redirect:/link-lecturers-form/" + campID;
     }
 
-    @GetMapping("/unlink-lecturer/{id}/{ip}")
-    public String unlinkLecturer(@PathVariable("id") long id,
-                                 @PathVariable("ip") long ip) {
-
-        Lecturer lecturer = lecturerService.getLecturerById(id);
-        List<Bootcamp> bootcamps = lecturer.getJoinedBootcamp();
-        bootcamps.remove(bootcampService.getBootcampById(ip));
-        lecturer.setJoinedBootcamp(bootcamps);
-        lecturerService.saveLecturer(lecturer);
-        return new String("redirect:/bootcamp/" + ip);
+    @GetMapping("/unlink-lecturer/{lecID}/{campID}")
+    public String unlinkLecturer(@PathVariable long lecID,
+                                 @PathVariable long campID) {
+        lecturerService.unlinkLecFromCamp(lecID, campID);
+        return "redirect:/bootcamp/" + campID;
     }
 
-
-    @GetMapping("/enrolled-lecturer/{id}/{ip}")
-    public String enrolledStudent(@PathVariable("id") long lecturerID,
-                                  @PathVariable("ip") long campID,
-                                  Model model) {
-        model.addAttribute("lecturer", lecturerService.getLecturerById(lecturerID));
+    // lecturer info, doubles lecturer/id page
+    @GetMapping("/enrolled-lecturer/{lecID}/{campID}")
+    public String enrolledLecturer(@PathVariable long lecID,
+                                   @PathVariable long campID,
+                                   Model model) {
+        model.addAttribute("lecturer", lecturerService.getLecturerById(lecID));
         model.addAttribute("bootcamp", bootcampService.getBootcampById(campID));
         return "enrolled-lecturer";
     }
 
-    @GetMapping("/link-task/{id}")
-    public String showTaskCheckbox(@PathVariable( "id") long id, Model model) {
-        List<Task> tasks = new ArrayList<>();
-        for (Task task : taskService.getAllTasks())
-            if (task.getBootcamp() == null)
-                tasks.add(task);
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("bootcamp", bootcampService.getBootcampById(id));
+//    enrolled-task is in taskController as /task/{id}
+
+    @GetMapping("/link-tasks-form/{campID}")
+    public String linkTasksForm(@PathVariable long campID, Model model) {
+        model.addAttribute("tasks", taskService.getTasksWithNoBootCamp());
+        model.addAttribute("bootcamp", bootcampService.getBootcampById(campID));
         return "link-task";
     }
 
-    @PostMapping("/insertTask/{id}")
-    public String insertTask(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                             @PathVariable("id") long id) {
-        Bootcamp thisBootcamp = bootcampService.getBootcampById(id);
-        for (Task task : bootcamp.getTasks()) {
-            task.setBootcamp(thisBootcamp);
-            taskService.saveTask(task);
-        }
-        return "redirect:/bootcamp/" + id;
+    @GetMapping("/link-task/{campID}/{taskID}")
+    public String linkTask(@PathVariable long campID, @PathVariable long taskID) {
+        taskService.linkTaskToBootcamp(campID, taskID);
+        return "redirect:/link-tasks-form/" + campID;
     }
 
-    @GetMapping("/unlink-task/{id}")
-    public String unlinkTask(@PathVariable("id") long id) {
-        Task task = taskService.getTaskById(id);
-        long index = task.getBootcamp().getId();
-        task.setBootcamp(null);
-        taskService.saveTask(task);
-        return "redirect:/bootcamp/" + index;
+    @GetMapping("/unlink-task/{taskID}")
+    public String unlinkTask(@PathVariable long taskID) {
+        Long campID = taskService.unlinkTask(taskID);
+        return "redirect:/bootcamp/" + campID;
     }
 }

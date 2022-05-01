@@ -5,116 +5,133 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
 
-    <!-- Top navigation bar -->
-    <div class="navigation-wrap bg-light start-header start-style">
+<!-- Top navigation bar -->
+<div class="navigation-wrap bg-light start-header start-style">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navbar-expand-md navbar-light">
+
+                    <!--<a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>-->
+                    <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto py-4 py-md-0">
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
+                                <a class="nav-link" href="/bootcamps">Bootcamps</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" href="/users">Users</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" href="/tasks">Tasks</a>
+                            </li>
+                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
+                                <div class="dropdown-menu">
+                                    <!-- redirect to logged-in user's user page-->
+                                    <a class="dropdown-item" th:href="@{'profile'}">My profile</a>
+                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+
+<div class="section full-height">
+    <div class="section" style="padding-top: 80px">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="navbar navbar-expand-md navbar-light">
 
-                        <!--<a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>-->
-                        <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
+            <div>
+                <h2>Bootcamps</h2>
+            </div>
 
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+            <br/>
 
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ml-auto py-4 py-md-0">
-                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
-                                    <a class="nav-link" href="/bootcamps">Bootcamps</a>
-                                </li>
-                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                    <a class="nav-link" href="/users">Users</a>
-                                </li>
-                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                    <a class="nav-link" href="/tasks">Tasks</a>
-                                </li>
-                                <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
-                                    <div class="dropdown-menu">
-                                        <!-- redirect to logged-in user's user page-->
-                                        <a class="dropdown-item" th:href = "@{'profile'}">My profile</a>
-                                        <a class="dropdown-item" href="/logout">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+            <!-- Add button -->
+            <div>
+                <a th:href="@{/new-bootcamp}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add </a>
+            </div>
 
-                    </nav>
-                </div>
+            <br/>
+
+            <!-- Table -->
+            <div>
+                <table border="1" class="table table-striped table-responsive-md">
+                    <!-- Table header -->
+                    <thead>
+                    <tr>
+                        <th> #</th>
+                        <th> Bootcamp</th>
+                        <th> Start date</th>
+                        <th> End date</th>
+                        <th> Lecturers</th>
+                        <th> Students</th>
+                        <th> Tasks</th>
+                        <th> Actions</th>
+                    </tr>
+                    </thead>
+                    <!-- Table rows -->
+                    <tbody>
+                    <tr th:each="bootcamp, status : ${listBootcamps}">
+                        <td th:text="${status.count}"></td>
+                        <td th:text="${bootcamp.name}"></td>
+                        <td th:text="${#dates.format(bootcamp.dateFrom, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(bootcamp.dateTo, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#lists.size(bootcamp.campLecturers)}"></td>
+                        <td th:text="${#lists.size(bootcamp.students)}"></td>
+                        <td th:text="${#lists.size(bootcamp.tasks)}"></td>
+
+                        <td>
+                            <!-- Open bootcamp page button (hardcoded link - it opens not particular bootcamp's page for now) -->
+                            <a th:href="@{/bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-warning">Open</a>
+                            <!-- Edit button -->
+                            <a th:href="@{/update-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-primary"><i
+                                    class="fa-solid fa-pencil"></i> Update</a>
+                            <!-- Delete button -->
+                            <a th:if="${#lists.size(bootcamp.students) == 0 &&
+                                        #lists.size(bootcamp.campLecturers) == 0 &&
+                                        #lists.size(bootcamp.tasks) == 0}"
+                               th:href="@{/delete-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-danger"><i
+                                    class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
-    <br/>
-
-    <div class="section full-height">
-        <div class="section" style="padding-top: 80px">
-            <div class="container">
-
-                <div>
-                    <h2>Bootcamps</h2>
-                </div>
-
-                <br/>
-
-                <!-- Add button -->
-                <div>
-                    <a th:href = "@{/new-bootcamp}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add </a>
-                </div>
-
-                <br/>
-
-                <!-- Table -->
-                <div>
-                    <table border="1" class="table table-striped table-responsive-md">
-                        <!-- Table header -->
-                        <thead>
-                        <tr>
-                            <th> # </th>
-                            <th> Bootcamp </th>
-                            <th> Start date </th>
-                            <th> End date </th>
-                            <th> Lecturers </th>
-                            <th> Students </th>
-                            <th> Tasks </th>
-                            <th> Actions </th>
-                        </tr>
-                        </thead>
-                        <!-- Table rows -->
-                        <tbody>
-                        <tr th:each="bootcamp : ${listBootcamps}">
-                            <td th:text="${listBootcamps.indexOf(bootcamp)+1}"></td>
-                            <td th:text="${bootcamp.name}"></td>
-                            <td th:text="${#dates.format(bootcamp.dateFrom, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${#dates.format(bootcamp.dateTo, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${bootcamp.getCampLecturers().size()}"></td>
-                            <td th:text="${bootcamp.getStudents().size()}"></td>
-                            <td th:text="${bootcamp.getTasks().size()}"></td>
-                            <td>
-                                <!-- Open bootcamp page button (hardcoded link - it opens not particular bootcamp's page for now) -->
-                                <a th:href="@{/bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-warning">Open</a>
-                                <!-- Edit button -->
-                                <a th:href="@{/update-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i></a>
-                                <!-- Delete button -->
-                                <a th:if="${bootcamp.students.size() == 0 && bootcamp.campLecturers.size() == 0 && bootcamp.tasks.size() == 0}" th:href="@{/delete-bootcamp/{id}(id=${bootcamp.id})}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.bootcamp.bootcampmanager.student;
 
+import com.bootcamp.bootcampmanager.studentTaskStatus.StatusService;
 import com.bootcamp.bootcampmanager.task.Task;
 import com.bootcamp.bootcampmanager.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +10,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class StudentHomepageController {
 
-    @Autowired
-    private StudentService studentService;
+    private final StudentService studentService;
+
+    private final TaskService taskService;
+
+    private final StatusService statusService;
 
     @Autowired
-    private TaskService taskService;
-
-    @Autowired
-    StatusRepository statusRepository;
+    public StudentHomepageController(StudentService studentService,
+                                     TaskService taskService,
+                                     StatusService statusService) {
+        this.studentService = studentService;
+        this.taskService = taskService;
+        this.statusService = statusService;
+    }
 
 
     @GetMapping("/student-homepage")
     public String showStudentTasks(Model model, Principal principal) {
-//        Getting studend by using principal and Repository method "findStudentByEmail"
+//        Getting student by using principal and Repository method "findStudentByEmail"
         Student student = studentService.getStudentByEmail(principal.getName());
-
         model.addAttribute("student", student);
         return "student-homepage";
     }
@@ -38,17 +42,13 @@ public class StudentHomepageController {
     public String displayTaskPage(@PathVariable("taskId") long taskId,
                                   Model model) {
         Task task = taskService.getTaskById(taskId);
-
         model.addAttribute("task", task);
         return "student-task";
     }
 
     @GetMapping("/changeStatus/{id}")
     public String changeStudentTaskStatus(@PathVariable("id") long studentTaskId) {
-        StudentTaskStatus byId = statusRepository.getById(studentTaskId);
-        Boolean status = byId.getStatus();
-        byId.setStatus(!status);
-        statusRepository.save(byId);
+        statusService.changeStatusByID(studentTaskId);
         return "redirect:/student-homepage";
     }
 }

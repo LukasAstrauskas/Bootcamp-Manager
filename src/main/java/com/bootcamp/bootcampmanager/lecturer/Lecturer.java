@@ -26,8 +26,9 @@ public class Lecturer extends User {
             inverseJoinColumns = @JoinColumn(name = "bootcamp_id"))
     List<Bootcamp> joinedBootcamp;
 
-    public Lecturer(String firstName, String lastName, String email) {
+    public Lecturer(String firstName, String lastName, String email, String password) {
         super(firstName, lastName, email);
+        setPassword(password);
         setRoles("ROLE_LECTURER");
     }
 

@@ -104,7 +104,7 @@
                     </tr>
                     <tr>
                         <td class="font-weight-bold"> Number of tasks </td>
-                        <th class="font-weight-normal" th:text="${student.getBootcamp().getTasks().size()}"></th>
+                        <th class="font-weight-normal" th:text="${student.taskStatusSet.size}"></th>
                     </tr>
 
                     </tbody>
@@ -133,12 +133,12 @@
                     </thead>
                     <!-- Table rows -->
                     <tbody>
-                    <tr th:each="task : ${student.bootcamp.tasks}">
-                        <th class="font-weight-normal" th:text="${student.bootcamp.tasks.indexOf(task)+1}"></th>
-                        <td class="font-weight-normal" th:text="${task.name}"></td>
-                        <td class="font-weight-normal" th:text="${task.description}"></td>
-                        <td class="font-weight-normal" th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></td>
-                        <th class="font-weight-normal" th:text="${helper.isTaskCompleted(task.getId(), student.getId())}"></th>
+                    <tr th:each="taskStatus, tStat : ${student.taskStatusSet}">
+                        <th class="font-weight-normal" th:text="${tStat.count}"></th>
+                        <td class="font-weight-normal" th:text="${taskStatus.task.name}"></td>
+                        <td class="font-weight-normal" th:text="${taskStatus.task.description}"></td>
+                        <td class="font-weight-normal" th:text="${#dates.format(taskStatus.task.deadline, 'yyyy-MM-dd')}"></td>
+                        <th class="font-weight-normal" th:text="${taskStatus.status} ? 'Completed' : 'Undone'"></th>
                     </tr>
                     <tr>
 

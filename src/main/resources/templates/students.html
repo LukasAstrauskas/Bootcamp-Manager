@@ -42,7 +42,7 @@
                                 <a class="nav-link" href="/students">Students</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link" th:href="@{/lecturer-tasks/{id}(id=${thisLecturer.id})}">Tasks</a>
+                                <a class="nav-link" th:href="@{/lecturer-tasks}">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
@@ -98,14 +98,12 @@
                         </thead>
                         <!-- Table rows -->
                         <tbody>
-                        <tr th:each="student : ${studentsList}">
-                            <td th:text="${studentsList.indexOf(student)+1}"></td>
-
-                            <td th:text="${student.getFirstName()}"></td>
-
-                            <td th:text="${student.getLastName()}"></td>
-                            <td th:text="${student.getEmail()}"></td>
-                            <td th:text="${student.getBootcamp().getName()}"></td>
+                        <tr th:each="student, stat : ${studentsList}">
+                            <td th:text="${stat.count}"></td>
+                            <td th:text="${student.firstName}"></td>
+                            <td th:text="${student.lastName}"></td>
+                            <td th:text="${student.email}"></td>
+                            <td th:text="${student.bootcamp.name}"></td>
 
                             <td>
                                 <!-- Open student page button  -->
@@ -113,10 +111,6 @@
 
                                 <a th:href="@{/update-student/{id}(id=${student.id})}" class="btn btn-primary"><i
                                         class="fa-solid fa-pencil"></i></a>
-                                <!-- Delete button -->
-                                <!--                            <a th:href="@{/delete-student/{id}(id=${student.id})}" class="btn btn-danger"><i-->
-                                <!--                                    class="fa-solid fa-trash-can"></i></a>-->
-
                             </td>
                         </tr>
                         </tbody>
@@ -146,12 +140,12 @@
                         </thead>
                         <!-- Table rows -->
                         <tbody>
-                        <tr th:each="bootcamp : ${bootcampsList}">
-                            <td th:text="${bootcampsList.indexOf(bootcamp)+1}"></td>
-                            <td th:text="${bootcamp.getName()}"></td>
-                            <td th:text="${bootcamp.getDateFrom().toGMTString()}"></td>
-                            <td th:text="${bootcamp.getDateTo().toGMTString()}"></td>
-                            <td th:text="${bootcamp.getStudents().size()}"></td>
+                        <tr th:each="bootcamp, stat : ${bootcampsList}">
+                            <td th:text="${stat.count}"></td>
+                            <td th:text="${bootcamp.name}"></td>
+                            <td th:text="${#dates.format(bootcamp.dateFrom, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${#dates.format(bootcamp.dateTo, 'yyyy-MM-dd')}"></td>
+                            <td th:text="${bootcamp.students.size}"></td>
                             </td>
                         </tr>
                         </tbody>

@@ -22,13 +22,14 @@
 <body class="hero-anime">
 
 <!-- Top navigation bar -->
-<div class="navigation-wrap bg-light start-header start-style">
+<div class="navigation-wrap bg-light-lecturer start-header start-style">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="navbar navbar-expand-md navbar-light">
 
-                    <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
+
+                    <a class="navbar-brand navbar-logo" href="/students">Bootcamp Manager</a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -39,21 +40,18 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto py-4 py-md-0">
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link" href="/bootcamps">Bootcamps</a>
+                                <a class="nav-link" th:href="@{/students}">Students</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4 active">
-                                <a class="nav-link" href="/users">Users</a>
-                            </li>
-                            <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link" href="/tasks">Tasks</a>
+                                <a class="nav-link" th:href="@{/lecturer-tasks}">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                                    aria-haspopup="true" aria-expanded="false"><i
                                         class="fa-solid fa-circle-user"></i></a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/profile">My profile</a>
-                                    <a class="dropdown-item" href="/logout">Logout</a>
+                                <div class="dropdown-menu dropdown-menu-lecturer">
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/profile">My profile</a>
+                                    <a class="dropdown-item dropdown-item-lecturer" href="/logout">Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -71,57 +69,80 @@
     <div class="section" style="padding-top: 80px">
         <div class="container">
 
-            <div>
-                <h2>Users</h2>
-            </div>
-
+            <!--            <div>-->
+            <!--                <h2> Task <a th:text="${task.name}"></a> Status </h2>-->
+            <!--            </div>-->
             <br/>
 
-            <!-- Add button -->
             <div>
-                <a th:href="@{/new-user}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add </a>
+                <a class="btn btn-warning" th:href="@{/lecturer-tasks}" role="button"> Back </a>
+                <!--                <a th:href="@{/new-lecturer-task}" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Task</a>-->
+                <a th:href="@{/update-task/{id}(id=${task.id})}" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Update</a>
+                <a th:if="${true}"
+                   th:href="@{/delete-lecturer-task/{id}(id=${task.id})}" class="btn btn-danger"><i
+                        class="fa-solid fa-trash-can"></i> Delete</a>
             </div>
+            <br/><br>
 
-            <br/>
 
             <!-- Table -->
             <div>
+
+                <h3>Task: "<a th:text="${task.name}"></a>".</h3>
+                <h3>Bootcamp: "<a th:text="${task.bootcamp.name}"></a>".</h3>
+
+                <a class="font-weight-bold"> Deadline: </a>
+                <!-- Show deadline date if it exists -->
+                <a style="color: red!important;" th:if="${task.deadline != null}"
+                   th:text="${#dates.format(task.deadline, 'yyyy-MM-dd')}"></a>
+                <!-- Show - if it does not exist -->
+                <a th:unless="${task.deadline != null}"> No deadline </a>
+                <br/>
+
+                <a class="font-weight-bold"> Description: </a>
+                <a th:text="${task.description}"></a><br><br>
+
+                <!-- Link -->
+                <div th:if="${task.linkURL != ''}">
+                    <a th:href="@{${task.linkURL}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning"
+                       data-toggle="tooltip" data-placement="top" th:title="${task.linkURL}"> Open link </a>
+                    <br>
+                </div>
+                <!--                             Show - if it does not exist-->
+                <div th:unless="${task.linkURL != ''}">No link</div>
+
+                <!-- File -->
+                <div th:if="${task.fileDB != null}">
+                    <a th:href="@{/downloadFile/{taskId}(taskId=${task.id})}"
+                       class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                       th:title="${task.fileDB.name}"><i class="fa-solid fa-download"></i> Download file </a>
+                    <br>
+                </div>
+                <!--                             Show - if it does not exist -->
+                <div th:unless="${task.fileDB != null}">No file to download</div>
+
+                <br>
                 <table border="1" class="table table-striped table-responsive-md">
                     <!-- Table header -->
                     <thead>
                     <tr>
                         <th> #</th>
-                        <th> First name</th>
-                        <th> Last name</th>
-                        <th> Email</th>
-                        <th> Role</th>
-                        <th> Actions</th>
+                        <th> Student</th>
+                        <th> Task Status</th>
                     </tr>
                     </thead>
                     <!-- Table rows -->
                     <tbody>
-
-                    <tr th:each="user, aStat : ${users}">
-                        <td th:text="${aStat.count}"></td>
-                        <td th:text="${user.firstName}"></td>
-                        <td th:text="${user.lastName}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td th:text="${user.roles}"></td>
-                        <td>
-                            <!-- Open user page button (hardcoded link - it opens not particular user's page for now) -->
-                            <a th:href="@{/user/{id}(id=${user.id})}" class="btn btn-warning"> Open </a>
-                            <!-- Edit button -->
-                            <a th:href="@{/update-user/{id}(id=${user.id})}" class="btn btn-primary"><i
-                                    class="fa-solid fa-pencil"></i></a>
-                            <!-- Delete button -->
-                            <a th:href="@{/delete-user/{id}(id=${user.id})}" class="btn btn-danger"><i
-                                    class="fa-solid fa-trash-can"></i></a>
-                        </td>
+                    <tr th:each="taskSt,stat : ${task.taskStatusList}">
+                        <td th:text="${stat.count}"></td>
+                        <td th:text="${taskSt.student.firstName}"></td>
+                        <td th:text="${taskSt.status} ? 'Completed' : 'Not Done'"></td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
+
+
         </div>
     </div>
 </div>

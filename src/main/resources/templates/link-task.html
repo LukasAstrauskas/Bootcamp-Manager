@@ -5,11 +5,18 @@
     <meta charset="UTF-8">
     <title>Bootcamp Manager</title>
     <script src="https://kit.fontawesome.com/008dc3c607.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link th:href="@{/css/main.css}" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     <script type="text/javascript" th:src="@{/js/main.js}"></script>
 </head>
 <body class="hero-anime">
@@ -23,7 +30,9 @@
 
                     <a class="navbar-brand navbar-logo" href="/bootcamps">Bootcamp Manager</a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
@@ -39,7 +48,9 @@
                                 <a class="nav-link" href="/tasks">Tasks</a>
                             </li>
                             <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-user"></i></a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false"><i
+                                        class="fa-solid fa-circle-user"></i></a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="/profile">My profile</a>
                                     <a class="dropdown-item" href="/logout">Logout</a>
@@ -62,7 +73,10 @@
 
             <!-- Title -->
             <div>
-                <h2> Add tasks to bootcamp "<td th:text="${bootcamp.getName()}"></td>" </h2>
+                <h2> Add tasks to bootcamp "
+                    <td th:text="${bootcamp.name}"></td>
+                    "
+                </h2>
             </div>
 
             <br/>
@@ -70,25 +84,29 @@
             <!-- Back button -->
             <div>
                 <a class="btn btn-warning" th:href="@{/bootcamp/{id}(id=${bootcamp.id})}"> Back </a>
-
             </div>
 
             <br>
-            <div>
-                <form action="#" th:action="@{/insertTask/{id}(id=${bootcamp.id})}" method="POST">
 
-                    <tr th:each="task : ${tasks}">
-
-                        <input type="checkbox" id="checkbox" name="checkbox" th:field="${bootcamp.tasks}" th:value="${task.getId()}"/>
-                        <label for="checkbox" th:text="${task.getName()}"></label>
-                        <br>
-
-                    </tr>
-                    <br>
-                    <button type="submit" class="btn btn-info col-2"> Save </button>
-                </form>
-                </form>
-            </div>
+            <table border="3" class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                    <th> Name</th>
+                    <th> Add to camp</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${tasks.empty}">
+                    <td colspan="2"> No Tasks Available</td>
+                </tr>
+                <tr th:each="task : ${tasks}">
+                    <td><span th:text="${task.name}"> Title </span></td>
+                    <td><a class="btn btn-success"
+                           th:href="@{/link-task/{campID}/{taskID}(campID=${bootcamp.id}, taskID=${task.id})}"><i
+                            class="fa-solid fa-link"></i> Assign </a></td>
+                </tr>
+                </tbody>
+            </table>
 
         </div>
     </div>

@@ -117,7 +117,7 @@
                                 <!-- class="btn btn-warning" data-toggle="tooltip" data-placement="top" th:title="${task.fileDB.name}">-->
 <!--                                <i class="fa-solid fa-download"></i> Download </a>-->
 
-                        <a  th:href="@{/task/{taskId}/file/{fileId}(taskId=${task.id},fileId=${0})}"
+                        <a  th:href="@{/downloadFile/{taskId}(taskId=${task.id})}"
                            class="btn btn-warning"><i class="fa-solid fa-download"></i> Download </a>
 
 

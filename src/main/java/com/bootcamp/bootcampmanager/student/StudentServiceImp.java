@@ -1,23 +1,29 @@
 package com.bootcamp.bootcampmanager.student;
 
 import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
+import com.bootcamp.bootcampmanager.bootcamp.BootcampService;
 import com.bootcamp.bootcampmanager.lecturer.Lecturer;
-import com.bootcamp.bootcampmanager.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImp implements StudentService {
 
+
+    private final StudentRepository studentRepository;
+
+    private final BootcampService bootcampService;
+
     @Autowired
-    private StudentRepository studentRepository;
+    public StudentServiceImp(StudentRepository studentRepository, BootcampService bootcampService) {
+        this.studentRepository = studentRepository;
+        this.bootcampService = bootcampService;
+    }
+
 
     @Override
     public List<Student> getAllStudents() {
@@ -26,19 +32,28 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public void saveStudent(Student student) {
-        this.studentRepository.save(student);
+        studentRepository.save(student);
+    }
+
+    public void updateStudent(Student newInfo) {
+        Student toUpdate = getStudentById(newInfo.getId());
+        toUpdate.setFirstName(newInfo.getFirstName());
+        toUpdate.setLastName(newInfo.getLastName());
+        toUpdate.setEmail(newInfo.getEmail());
+        studentRepository.save(toUpdate);
+    }
+
+    @Override
+    public void linkStudentToBootcamp(long campID, long studID) {
+        Student stud = studentRepository.getById(studID);
+        Bootcamp camp = bootcampService.getBootcampById(campID);
+        stud.setBootcamp(camp);
+        studentRepository.save(stud);
     }
 
     @Override
     public Student getStudentById(long id) {
-        Optional<Student> optional = studentRepository.findById(id);
-        Student student;
-        if (optional.isPresent()) {
-            student = optional.get();
-        } else {
-            throw new RuntimeException("Not found student: " + id);
-        }
-        return student;
+        return studentRepository.getById(id);
     }
 
     @Override
@@ -64,17 +79,6 @@ public class StudentServiceImp implements StudentService {
         student.setBootcamp(null);
         saveStudent(student);
         return bootcampId;
-    }
-
-    private String findLecturer(Student student) {
-        if (student.getBootcamp() != null) {
-            Optional<Lecturer> optLecturer = student.getBootcamp().
-                    getCampLecturers().stream().
-                    filter(lecturer -> lecturer.isTrainer()).findFirst();
-            return optLecturer.map(lecturer -> lecturer.getFirstName() + " " + lecturer.getLastName()).
-                    orElse("Not Found");
-        }
-        return "";
     }
 
     public Student getStudentByEmail(String email) {

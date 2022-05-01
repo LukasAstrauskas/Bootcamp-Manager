@@ -1,74 +1,62 @@
 package com.bootcamp.bootcampmanager.task;
 
-import com.bootcamp.bootcampmanager.bootcamp.Bootcamp;
 import com.bootcamp.bootcampmanager.bootcamp.BootcampService;
 import com.bootcamp.bootcampmanager.filedb.FileDBService;
 import com.bootcamp.bootcampmanager.lecturer.Lecturer;
 import com.bootcamp.bootcampmanager.lecturer.LecturerService;
-import com.bootcamp.bootcampmanager.student.Student;
-import com.bootcamp.bootcampmanager.student.StudentHelper;
-import com.bootcamp.bootcampmanager.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import java.security.Principal;
 
 @Controller
 public class TaskController {
 
-    @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
+
+    private final FileDBService fileDBService;
+
+    private final LecturerService lecturerService;
+
+    private final BootcampService bootcampService;
 
     @Autowired
-    private FileDBService fileDBService;
+    public TaskController(TaskService taskService, FileDBService fileDBService,
+                          LecturerService lecturerService, BootcampService bootcampService) {
+        this.taskService = taskService;
+        this.fileDBService = fileDBService;
+        this.lecturerService = lecturerService;
+        this.bootcampService = bootcampService;
+    }
 
-    @Autowired
-    private StudentService studentService;
-
-    @Autowired
-    private LecturerService lecturerService;
-
-    @Autowired
-    private BootcampService bootcampService;
-
+    //  admin page
     @GetMapping("/tasks")
     public String showAllTasks(Model model) {
         model.addAttribute("tasksList", taskService.getAllTasks());
         return "tasks";
     }
 
+    //    amin page
     @GetMapping("/new-task")
     public String showNewTaskForm(Model model) {
-        model.addAttribute("task", new Task());
-        model.addAttribute("id", new Bootcamp());
         model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
         return "new-task";
     }
 
+    //  admin page
     @PostMapping("/save-task")
-    public String saveTask(@ModelAttribute("bootcamp") Bootcamp bootcamp,
-                           @ModelAttribute("task") Task task,
+    public String saveTask(@ModelAttribute("task") Task task,
                            @RequestParam("file") MultipartFile[] files) {
         task.setFileDB(fileDBService.saveFile(files[0], task));
-        if (bootcamp.getId() != 0) {
-            try {
-                Bootcamp camp = bootcampService.getBootcampById(bootcamp.getId());
-                task.setBootcamp(camp);
-
-            } catch (Exception e) {
-                System.out.println("\n\n\n\n Whoops!? Something went wrong!!!" + e.getMessage() + "\n\n\n\n");
-            }
-        }
         taskService.saveTask(task);
         return "redirect:/tasks";
     }
 
+    //    not used in admin page
     @GetMapping("/update-task/{id}")
     public String showTaskFormForUpdate(@PathVariable(value = "id") long id,
                                         Model model) {
@@ -76,18 +64,21 @@ public class TaskController {
         return "update-task";
     }
 
+    //  admin page
     @GetMapping("/delete-task/{id}")
     public String deleteTask(@PathVariable(value = "id") long id) {
-        this.taskService.deleteTaskById(id);
+        taskService.deleteTaskById(id);
         return "redirect:/tasks";
     }
 
+    //  admin page
     @GetMapping("/task/{id}")
     public String displayTaskPage(@PathVariable(value = "id") long id,
                                   Model model) {
         model.addAttribute("task", taskService.getTaskById(id));
         return "task";
     }
+
 
     @GetMapping("/task-status/{id}")
     public String showTaskCheckbox(@PathVariable(value = "id") long id,
@@ -96,66 +87,56 @@ public class TaskController {
         return "task";
     }
 
-    @GetMapping("/lecturer-tasks/{id}")
-    public String showLecturerTasks(@PathVariable( value = "id") long id, Model model) {
-
-        Lecturer thisLecturer = lecturerService.getLecturerById(id);
-        List<Task> tasksList = new ArrayList<>();
-        FilterContainer filterContainer = new FilterContainer( -1);
-        System.out.println("\n\n From Getter!!!!" + filterContainer.getTask() + "\n\n\n\n");
-        if(filterContainer.showTable() && filterContainer.getTask() > 0){
-            Task task = taskService.getTaskById(filterContainer.getTask());
-            List<Student> students = task.getBootcamp().getStudents();
-            model.addAttribute("task", task);
-            model.addAttribute("students", students);
-            model.addAttribute("helper", new StudentHelper(studentService));
-        }
-
-
-        for(Bootcamp bootcamp : lecturerService.getLecturerById(id).getJoinedBootcamp())
-                tasksList.addAll(bootcamp.getTasks());
-        model.addAttribute("filterContainer", filterContainer);
-        model.addAttribute("id", id);
-        model.addAttribute("tasksList", tasksList);
-        model.addAttribute("bootcamps", thisLecturer.getJoinedBootcamp());
-        model.addAttribute("thisLecturer", thisLecturer);
+    // lecturer page, tasks in lect's camps
+    @GetMapping("/lecturer-tasks")
+    public String showLecturerTasks(Model model, Principal principal) {
+        Lecturer lec = lecturerService.getLecturerByEmail(principal.getName());
+        model.addAttribute("lecCamps", lec.getJoinedBootcamp());
+        model.addAttribute("idDao", new IdDAO());
         return "lecturer-tasks";
     }
 
-    @PostMapping(path = "/filter/{id}")
-    public String Filter(@PathVariable( value = "id") long id, @ModelAttribute("FilterContainer") FilterContainer filterContainer, Model model) {
-
-        filterContainer.setShow();
-        filterContainer.setId(filterContainer.getSelectedTask());
-        System.out.println("\n\n From poster!!!" + filterContainer.getSelectedTask() +  "\n\n\n\n");
-
-        return "redirect:/lecturer-tasks/" + id;
+    // lecturer page, show students with task status
+    @PostMapping("/task-students-status")
+    public String showTaskWithStudentsStatus(@ModelAttribute("idDao") IdDAO idDao, Model model,
+                                             Authentication auth) {
+        if (idDao.getId() == 0) {
+            return "redirect:/lecturer-tasks";
+        }
+        model.addAttribute("task", taskService.getTaskById(idDao.getId()));
+        return "task-students-status";
     }
 
+    //    in lecturer page add task form
     @GetMapping("/new-lecturer-task")
-    public String showNewLecturerTaskForm(Model model) {
-        Bootcamp id = new Bootcamp();
-        Task task = new Task();
-        model.addAttribute("task", task);
-        model.addAttribute("id", id);
-        model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
+    public String showNewLecturerTaskForm(Model model, Principal principal) {
+        model.addAttribute("task", new Task());
+        model.addAttribute("bootcamps",
+                lecturerService.getLecturersBootcampsByEmail(principal.getName()));
         return "new-lecturer-task";
     }
 
+    //    used in lecturer page to add task
     @PostMapping("/save-lecturer-task")
-    public String saveLecturerTask(@ModelAttribute("bootcamp") Bootcamp bootcamp, @ModelAttribute("task") Task task, @RequestParam("file") MultipartFile[] files) {
+    public String saveLecturerTask(@ModelAttribute("task") Task task,
+                                   @RequestParam("file") MultipartFile[] files) {
         task.setFileDB(fileDBService.saveFile(files[0], task));
-        if(bootcamp.getId() != 0){
-            try{
-                Bootcamp camp = bootcampService.getBootcampById(bootcamp.getId());
-                task.setBootcamp(camp);
-
-            }
-            catch(Exception e){
-                System.out.println("\n\n\n\n Whoops!? Something went wrong!!!" + e.getMessage() + "\n\n\n\n");
-            }
-        }
         taskService.saveTask(task);
-        return "redirect:/students";
+        return "redirect:/lecturer-tasks";
+    }
+
+    // lecturer page, delete task
+    @GetMapping("/delete-lecturer-task/{id}")
+    public String deleteLecturerTask(@PathVariable("id") long id) {
+        System.out.println("Controller Deleting task: " + taskService.getTaskById(id).getName());
+        taskService.deleteTaskById(id);
+        return "redirect:/lecturer-tasks";
+    }
+
+    /*lecturer page. Dont update fileDB */
+    @PostMapping("/update-lecturer-task")
+    public String updateLecturerTask(@ModelAttribute("task") Task task) {
+        taskService.saveTask(task);
+        return "redirect:/lecturer-tasks";
     }
 }

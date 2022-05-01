@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class FileDB {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -27,12 +27,11 @@ public class FileDB {
     @Lob
     private byte[] data;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
     public FileDB(String name, String type, byte[] data, Task task) {
-        super();
         this.name = name;
         this.type = type;
         this.data = data;

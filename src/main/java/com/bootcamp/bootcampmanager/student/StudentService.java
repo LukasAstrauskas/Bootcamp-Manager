@@ -21,4 +21,9 @@ public interface StudentService {
     Long unlinkStudent(long id);
 
     Student getStudentByEmail(String email);
+
+
+    void updateStudent(Student student);
+
+    void linkStudentToBootcamp(long campID, long studID);
 }

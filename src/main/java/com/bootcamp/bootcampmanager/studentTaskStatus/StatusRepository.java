@@ -1,4 +1,4 @@
-package com.bootcamp.bootcampmanager.student;
+package com.bootcamp.bootcampmanager.studentTaskStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

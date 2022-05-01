@@ -4,8 +4,11 @@ import java.util.List;
 
 public interface AdminService {
 
-    public List<Admin> getAllAdmins();
-    public void saveAdmin(Admin admin);
-    public Admin getAdminById(long id);
-    public void deleteAdminById(long id);
+    List<Admin> getAllAdmins();
+
+    void saveAdmin(Admin admin);
+
+    Admin getAdminById(long id);
+
+    void deleteAdminById(long id);
 }

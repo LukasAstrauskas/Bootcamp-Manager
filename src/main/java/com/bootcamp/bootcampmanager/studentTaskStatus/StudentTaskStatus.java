@@ -1,5 +1,6 @@
-package com.bootcamp.bootcampmanager.student;
+package com.bootcamp.bootcampmanager.studentTaskStatus;
 
+import com.bootcamp.bootcampmanager.student.Student;
 import com.bootcamp.bootcampmanager.task.Task;
 
 import javax.persistence.*;

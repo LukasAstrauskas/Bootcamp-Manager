@@ -35,10 +35,10 @@ public class Bootcamp {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateTo;
 
-    @OneToMany(mappedBy = "bootcamp")
+    @OneToMany(mappedBy = "bootcamp", fetch = FetchType.LAZY)
     private List<Student> students;
 
-    @OneToMany(mappedBy = "bootcamp", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bootcamp", fetch = FetchType.LAZY)
     private List<Task> tasks;
 
     @ManyToMany(mappedBy = "joinedBootcamp")

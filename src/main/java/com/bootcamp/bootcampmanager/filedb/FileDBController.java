@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @Controller
 public class FileDBController {
@@ -37,14 +36,15 @@ public class FileDBController {
         task.setFileDB(fileDBService.saveFile(files[0], task));
         return "redirect:/tasks";
     }
-
-    @GetMapping("/task/{taskId}/file/{fileId}")
+// was /task/{id}/fileDB/{id} ,changed fileDB unnecessary, mapping matches method name.
+     @GetMapping("/downloadFile/{taskId}")
     public ResponseEntity<ByteArrayResource> downloadFile(
-            @PathVariable long taskId,
-            @PathVariable Long fileId
+            @PathVariable("taskId") long taskId
     ) {
-        taskService.getTaskById(taskId);
-        FileDB fileDB = fileDBService.getFile(fileId).get();
+        FileDB fileDB = taskService.getTaskById(taskId).getFileDB();
+        if (taskService.getTaskById(taskId).getFileDB() == null){
+            System.out.println("No FileDB");
+        }
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(fileDB.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,
