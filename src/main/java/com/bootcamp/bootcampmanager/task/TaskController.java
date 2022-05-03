@@ -40,14 +40,15 @@ public class TaskController {
         return "tasks";
     }
 
-    //    amin page
+    //    admin page, not working
     @GetMapping("/new-task")
     public String showNewTaskForm(Model model) {
+        model.addAttribute("task", new Task());
         model.addAttribute("bootcamps", bootcampService.getAllBootcamps());
         return "new-task";
     }
 
-    //  admin page
+    //  admin page, dublicates save-lecturer-task
     @PostMapping("/save-task")
     public String saveTask(@ModelAttribute("task") Task task,
                            @RequestParam("file") MultipartFile[] files) {
